@@ -26,6 +26,9 @@ class Stats:
       
    def update(self):
       today = datetime.now().weekday()
+      if today < len(self.periodCounts) - 1:
+         self.periodCounts.pop()
+
       if today > len(self.periodCounts) - 1:
          self.periodCounts.extend([0]*(today - len(self.periodCounts) -1))
       
