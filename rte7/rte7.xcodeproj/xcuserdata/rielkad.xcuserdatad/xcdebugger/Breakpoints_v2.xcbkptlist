@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "47CE3299-A23E-49D9-BCE7-E371D44BDFAA"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A9AADB6D-D48C-4895-A693-6CF6261036F1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/rte7App.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9D686D9E-0C0F-4E3D-9ACC-0FD0CC75C0F0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/GlobalEventMonitor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "handleKeyboardEvent(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9D686D9E-0C0F-4E3D-9ACC-0FD0CC75C0F0 - a86c7c253c388546"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.GlobalEventMonitor.handleKeyboardEvent(__C.NSEvent) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "34">
+               </Location>
+               <Location
+                  uuid = "9D686D9E-0C0F-4E3D-9ACC-0FD0CC75C0F0 - a86c7c253c388546"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.GlobalEventMonitor.handleKeyboardEvent(__C.NSEvent) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "51">
+               </Location>
+               <Location
+                  uuid = "9D686D9E-0C0F-4E3D-9ACC-0FD0CC75C0F0 - a86c7c253c388525"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.GlobalEventMonitor.handleKeyboardEvent(__C.NSEvent) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "51">
+               </Location>
+               <Location
+                  uuid = "9D686D9E-0C0F-4E3D-9ACC-0FD0CC75C0F0 - 797858bbe6f7fea2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KitKat.GlobalEventMonitor.handleKeyboardEvent(__C.NSEvent) -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "51">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E8399121-20AE-4B1C-AD6D-74E64B46BC80"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/rte7App.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "init()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E8399121-20AE-4B1C-AD6D-74E64B46BC80 - 7817512d72f33f6f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "58">
+               </Location>
+               <Location
+                  uuid = "E8399121-20AE-4B1C-AD6D-74E64B46BC80 - ebcca78ab2830f5e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.AppDelegate.init() -&gt; rte7.AppDelegate"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "457">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A242E11F-35FE-4776-8668-BBA0E0A5A269"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/rte7App.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "applicationWillTerminate(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A242E11F-35FE-4776-8668-BBA0E0A5A269 - b32db592ab4c4550"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.AppDelegate.applicationWillTerminate(Foundation.Notification) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "45">
+               </Location>
+               <Location
+                  uuid = "A242E11F-35FE-4776-8668-BBA0E0A5A269 - b32db592ab4c4571"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.AppDelegate.applicationWillTerminate(Foundation.Notification) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "45">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3EAAD763-C6E5-44A6-9A6E-8C167675A41F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/rte7App.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "setMenuText(text:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C198017F-EEE3-4B68-96D7-405E01A5EAA6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/CountDownTimer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "startTimer()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "68C1A217-245C-4B99-8154-5E487B23FC6E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/CountDownTimer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "startTimer()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "68C1A217-245C-4B99-8154-5E487B23FC6E - 60e58b41882bd89e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.CountDownTimer.startTimer() -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/CountDownTimer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "55">
+               </Location>
+               <Location
+                  uuid = "68C1A217-245C-4B99-8154-5E487B23FC6E - af81229f728c5ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (__C.NSTimer) -&gt; () in rte7.CountDownTimer.startTimer() -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/CountDownTimer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "141">
+               </Location>
+               <Location
+                  uuid = "68C1A217-245C-4B99-8154-5E487B23FC6E - 7791152abe882cfe"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KitKat.CountDownTimer.startTimer() -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/CountDownTimer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "55">
+               </Location>
+               <Location
+                  uuid = "68C1A217-245C-4B99-8154-5E487B23FC6E - 6f0780b540cb24e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (__C.NSTimer) -&gt; () in KitKat.CountDownTimer.startTimer() -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/CountDownTimer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "141">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "426DF056-C457-46EE-AAAE-61C1CE6D607F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/CountDownTimer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "startTimer()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "21B9320C-F5EB-4BF7-86AC-1C11361CC1FC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/CountDownTimer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "startTimer()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "21B9320C-F5EB-4BF7-86AC-1C11361CC1FC - af81229f728c7f3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (__C.NSTimer) -&gt; () in rte7.CountDownTimer.startTimer() -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/CountDownTimer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "1012">
+               </Location>
+               <Location
+                  uuid = "21B9320C-F5EB-4BF7-86AC-1C11361CC1FC - a30010e373407167"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #1 @Sendable (__C.NSTimer) -&gt; () in rte7.CountDownTimer.startTimer() -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/CountDownTimer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "57">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2BBD15E2-7428-4B92-9DD0-D51C3484FF84"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/rte7App.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "applicationShouldHandleReopen(_:hasVisibleWindows:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2BBD15E2-7428-4B92-9DD0-D51C3484FF84 - 8eee099ed9c476cd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KitKat.AppDelegate.applicationShouldHandleReopen(_: __C.NSApplication, hasVisibleWindows: Swift.Bool) -&gt; Swift.Bool"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "146">
+               </Location>
+               <Location
+                  uuid = "2BBD15E2-7428-4B92-9DD0-D51C3484FF84 - 8eee099ed9c476aa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KitKat.AppDelegate.applicationShouldHandleReopen(_: __C.NSApplication, hasVisibleWindows: Swift.Bool) -&gt; Swift.Bool"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "146">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1FF7F7D2-2661-4CF6-B483-AF5B9579DC09"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/CountDownTimer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "startTimer()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "327F2137-9F17-4088-AB75-9F8D780F19B3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/rte7App.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9A251BA3-F4AF-4913-8B49-09AB8D31AE2D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/rte7App.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "applicationDidFinishLaunching(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9A251BA3-F4AF-4913-8B49-09AB8D31AE2D - facc6ed8dd645c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Foundation.Notification) -&gt; () in rte7.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "83">
+               </Location>
+               <Location
+                  uuid = "9A251BA3-F4AF-4913-8B49-09AB8D31AE2D - facc6ed8dd645c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Foundation.Notification) -&gt; () in rte7.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "86">
+               </Location>
+               <Location
+                  uuid = "9A251BA3-F4AF-4913-8B49-09AB8D31AE2D - facc6ed8dd645c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Foundation.Notification) -&gt; () in rte7.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "257">
+               </Location>
+               <Location
+                  uuid = "9A251BA3-F4AF-4913-8B49-09AB8D31AE2D - e71a6cd3e364ddc6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Foundation.Notification) -&gt; () in KitKat.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "273">
+               </Location>
+               <Location
+                  uuid = "9A251BA3-F4AF-4913-8B49-09AB8D31AE2D - e71a6cd3e364dd80"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Foundation.Notification) -&gt; () in KitKat.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "273">
+               </Location>
+               <Location
+                  uuid = "9A251BA3-F4AF-4913-8B49-09AB8D31AE2D - e71a6cd3e364dd80"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Foundation.Notification) -&gt; () in KitKat.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "328">
+               </Location>
+               <Location
+                  uuid = "9A251BA3-F4AF-4913-8B49-09AB8D31AE2D - e71a6cd3e364de2d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Foundation.Notification) -&gt; () in KitKat.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/rte7App.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "268">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5E5C1C34-1DB3-4AE1-B26E-1BFB1A73774C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Utils/logger.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "init()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8BD1D83A-4CD4-457E-8E8E-68A215EB66C6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/CountDownTimer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
+            landmarkName = "continueCounter()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5FFC4933-691A-4DF3-BAF7-EB008371AB74"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/GlobalEventMonitor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "start()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5FFC4933-691A-4DF3-BAF7-EB008371AB74 - e92c4d5d6da37275"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.GlobalEventMonitor.start() -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "58">
+               </Location>
+               <Location
+                  uuid = "5FFC4933-691A-4DF3-BAF7-EB008371AB74 - 8ae8ebfc6e7a1c0e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.NSEvent) -&gt; () in rte7.GlobalEventMonitor.start() -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "37">
+               </Location>
+               <Location
+                  uuid = "5FFC4933-691A-4DF3-BAF7-EB008371AB74 - e92c4d5d6da37254"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rte7.GlobalEventMonitor.start() -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "133">
+               </Location>
+               <Location
+                  uuid = "5FFC4933-691A-4DF3-BAF7-EB008371AB74 - 8ae8ebfc6e7a1c2f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.NSEvent) -&gt; () in rte7.GlobalEventMonitor.start() -&gt; ()"
+                  moduleName = "rte7"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "37">
+               </Location>
+               <Location
+                  uuid = "5FFC4933-691A-4DF3-BAF7-EB008371AB74 - 9164a411348fdda4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KitKat.GlobalEventMonitor.start() -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "133">
+               </Location>
+               <Location
+                  uuid = "5FFC4933-691A-4DF3-BAF7-EB008371AB74 - 588adda983fb3acf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.NSEvent) -&gt; () in KitKat.GlobalEventMonitor.start() -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Model/GlobalEventMonitor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "37">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9553E853-EF64-4B64-9F4A-2DAF51AB7B46"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Model/CountDownTimer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "startTimer()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "38120AA6-FC78-4753-9F71-D3C06754D970"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Utils/logger.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "init()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5B45CC86-8483-4F22-8EED-327574CF1471"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Utils/RESTAPIClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "request(_:method:parameters:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "84B90D62-0312-4B16-83BE-BDBEA5B674A2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/Utils/RESTAPIClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "request(_:method:parameters:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "84B90D62-0312-4B16-83BE-BDBEA5B674A2 - 97ae2b0f3fee64d7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in KitKat.RESTAPIClient.request&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable, &#x3c4;_0_0: Swift.Encodable&gt;(_: Swift.String, method: KitKat.RESTAPIClient.HTTPMethod, parameters: Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Utils/RESTAPIClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "394">
+               </Location>
+               <Location
+                  uuid = "84B90D62-0312-4B16-83BE-BDBEA5B674A2 - 97ae2b0f3fee64d7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in KitKat.RESTAPIClient.request&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable, &#x3c4;_0_0: Swift.Encodable&gt;(_: Swift.String, method: KitKat.RESTAPIClient.HTTPMethod, parameters: Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/Utils/RESTAPIClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "538">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "35759210-A88E-48DF-9F2C-5465B5A83125"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/BreakWindow.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "getQuote()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "13277546-FF4D-400F-8CDA-F1AB0503984A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rte7/BreakWindow.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "getQuote()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "13277546-FF4D-400F-8CDA-F1AB0503984A - bc99953c674aee1e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;KitKat.Quote, Swift.Error&gt;) -&gt; () in KitKat.BreakViewController.getQuote() -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/BreakWindow.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "1462">
+               </Location>
+               <Location
+                  uuid = "13277546-FF4D-400F-8CDA-F1AB0503984A - fb4abc8d0e40b7a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (Swift.Result&lt;KitKat.Quote, Swift.Error&gt;) -&gt; () in KitKat.BreakViewController.getQuote() -&gt; ()"
+                  moduleName = "KitKat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rielkad/git/rte7/rte7/rte7/BreakWindow.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "83">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

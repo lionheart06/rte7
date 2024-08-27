@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
+   sodipodi:docname="drawing.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.0502806"
+     inkscape:cx="275.87626"
+     inkscape:cy="576.01258"
+     inkscape:window-width="1390"
+     inkscape:window-height="980"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 148.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="210 : 148.5 : 1"
+       inkscape:persp3d-origin="105 : 99 : 1"
+       id="perspective332" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#550000;stroke-width:0.264583"
+       id="rect379"
+       width="24.287382"
+       height="24.287382"
+       x="61.065426"
+       y="145.37732"
+       rx="0"
+       ry="2.432358"
+       inkscape:export-filename="../../../Downloads/kitkat512.png"
+       inkscape:export-xdpi="1070.91"
+       inkscape:export-ydpi="1070.91" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.7611px;font-family:AppleMyungjo;-inkscape-font-specification:'AppleMyungjo, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;stroke-width:0.264583"
+       x="66.616829"
+       y="154.74533"
+       id="text113"><tspan
+         sodipodi:role="line"
+         id="tspan111"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.7611px;font-family:AppleMyungjo;-inkscape-font-specification:'AppleMyungjo, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;stroke-width:0.264583"
+         x="66.616829"
+         y="154.74533">Kit</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.7611px;font-family:AppleMyungjo;-inkscape-font-specification:'AppleMyungjo, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;stroke-width:0.264583"
+         x="66.616829"
+         y="164.4467"
+         id="tspan115">Kat</tspan></text>
+    <rect
+       style="fill:#800000;stroke-width:0.329123"
+       id="rect220"
+       width="34.002338"
+       height="20.817757"
+       x="21.164719"
+       y="42.329437"
+       rx="6.5922928"
+       ry="2.7757003" />
+    <rect
+       style="fill:#800000;stroke-width:0.264583"
+       id="rect348"
+       width="12.837617"
+       height="7.2862148"
+       x="79.454437"
+       y="70.780365"
+       rx="22.577782"
+       ry="0.3469626" />
+    <rect
+       style="fill:#800000;stroke-width:0.264583"
+       id="rect350"
+       width="24.701481"
+       height="15.266355"
+       x="112.41589"
+       y="67.310745"
+       rx="22.577782"
+       ry="0.3469626" />
+  </g>
+</svg>
