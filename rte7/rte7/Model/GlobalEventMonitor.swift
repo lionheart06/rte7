@@ -19,6 +19,7 @@ import Cocoa
      func start() {
          counter.continueCounter()
          monitor = NSEvent.addGlobalMonitorForEvents(matching: [.keyDown, .keyUp], handler: {event in self.handleKeyboardEvent(event)})
+         Logger.shared.log("GlobalMonitor added")
      }
  
      func stop() {

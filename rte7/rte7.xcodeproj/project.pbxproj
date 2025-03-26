@@ -15,14 +15,14 @@
 		E504AAD32BF2C0660020C726 /* rte7UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504AAD22BF2C0660020C726 /* rte7UITests.swift */; };
 		E504AAD52BF2C0660020C726 /* rte7UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504AAD42BF2C0660020C726 /* rte7UITestsLaunchTests.swift */; };
 		E53596152C0F9CAE002CEC50 /* GlobalEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53596142C0F9CAE002CEC50 /* GlobalEventMonitor.swift */; };
-		E54F4F232C2B8884004D3740 /* logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54F4F222C2B8884004D3740 /* logger.swift */; };
+		E54F4F232C2B8884004D3740 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54F4F222C2B8884004D3740 /* Logger.swift */; };
 		E54F4F252C2CCAB4004D3740 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54F4F242C2CCAB4004D3740 /* WindowController.swift */; };
-		E55A44CD2C7CF8E100BC3A3F /* BreakWindowSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A44CC2C7CF8E100BC3A3F /* BreakWindowSwift.swift */; };
+		E55A44CD2C7CF8E100BC3A3F /* BreakWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A44CC2C7CF8E100BC3A3F /* BreakWindow.swift */; };
 		E57365352C75D22E00409559 /* RESTAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57365342C75D22E00409559 /* RESTAPIClient.swift */; };
+		E581F7392C7FBC1F00531FDA /* QuoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E581F7382C7FBC1F00531FDA /* QuoteViewModel.swift */; };
 		E5CAB0272C13B8AB00622591 /* Break.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CAB0262C13B8AB00622591 /* Break.swift */; };
 		E5CAB0292C1B6A6E00622591 /* CountDownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CAB0282C1B6A6E00622591 /* CountDownTimer.swift */; };
 		E5CAB02B2C1B780600622591 /* MyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CAB02A2C1B780600622591 /* MyDelegate.swift */; };
-		E5D825AC2C6FC485006BC5AD /* BreakWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D825AB2C6FC485006BC5AD /* BreakWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,14 +55,14 @@
 		E504AAD22BF2C0660020C726 /* rte7UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rte7UITests.swift; sourceTree = "<group>"; };
 		E504AAD42BF2C0660020C726 /* rte7UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rte7UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		E53596142C0F9CAE002CEC50 /* GlobalEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalEventMonitor.swift; sourceTree = "<group>"; };
-		E54F4F222C2B8884004D3740 /* logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logger.swift; sourceTree = "<group>"; };
+		E54F4F222C2B8884004D3740 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		E54F4F242C2CCAB4004D3740 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
-		E55A44CC2C7CF8E100BC3A3F /* BreakWindowSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakWindowSwift.swift; sourceTree = "<group>"; };
+		E55A44CC2C7CF8E100BC3A3F /* BreakWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakWindow.swift; sourceTree = "<group>"; };
 		E57365342C75D22E00409559 /* RESTAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTAPIClient.swift; sourceTree = "<group>"; };
+		E581F7382C7FBC1F00531FDA /* QuoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewModel.swift; sourceTree = "<group>"; };
 		E5CAB0262C13B8AB00622591 /* Break.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Break.swift; sourceTree = "<group>"; };
 		E5CAB0282C1B6A6E00622591 /* CountDownTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownTimer.swift; sourceTree = "<group>"; };
 		E5CAB02A2C1B780600622591 /* MyDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDelegate.swift; sourceTree = "<group>"; };
-		E5D825AB2C6FC485006BC5AD /* BreakWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,8 +121,8 @@
 				E504AABF2BF2C0650020C726 /* rte7.entitlements */,
 				E504AABC2BF2C0650020C726 /* Preview Content */,
 				E54F4F242C2CCAB4004D3740 /* WindowController.swift */,
-				E5D825AB2C6FC485006BC5AD /* BreakWindow.swift */,
-				E55A44CC2C7CF8E100BC3A3F /* BreakWindowSwift.swift */,
+				E55A44CC2C7CF8E100BC3A3F /* BreakWindow.swift */,
+				E581F7382C7FBC1F00531FDA /* QuoteViewModel.swift */,
 			);
 			path = rte7;
 			sourceTree = "<group>";
@@ -155,7 +155,7 @@
 		E54F4F212C2B8872004D3740 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				E54F4F222C2B8884004D3740 /* logger.swift */,
+				E54F4F222C2B8884004D3740 /* Logger.swift */,
 				E57365342C75D22E00409559 /* RESTAPIClient.swift */,
 			);
 			path = Utils;
@@ -302,15 +302,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E55A44CD2C7CF8E100BC3A3F /* BreakWindowSwift.swift in Sources */,
-				E5D825AC2C6FC485006BC5AD /* BreakWindow.swift in Sources */,
+				E55A44CD2C7CF8E100BC3A3F /* BreakWindow.swift in Sources */,
 				E504AAB92BF2C0630020C726 /* ContentView.swift in Sources */,
 				E5CAB0272C13B8AB00622591 /* Break.swift in Sources */,
 				E5CAB02B2C1B780600622591 /* MyDelegate.swift in Sources */,
 				E53596152C0F9CAE002CEC50 /* GlobalEventMonitor.swift in Sources */,
+				E581F7392C7FBC1F00531FDA /* QuoteViewModel.swift in Sources */,
 				E5CAB0292C1B6A6E00622591 /* CountDownTimer.swift in Sources */,
 				E54F4F252C2CCAB4004D3740 /* WindowController.swift in Sources */,
-				E54F4F232C2B8884004D3740 /* logger.swift in Sources */,
+				E54F4F232C2B8884004D3740 /* Logger.swift in Sources */,
 				E504AAB72BF2C0630020C726 /* rte7App.swift in Sources */,
 				E57365352C75D22E00409559 /* RESTAPIClient.swift in Sources */,
 			);

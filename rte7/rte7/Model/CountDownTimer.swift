@@ -16,11 +16,11 @@ enum CounterState {
 let PERIOD:Int = 30
 
 class CountDownTimer {
- var timer:Timer?
- var state:CounterState = CounterState.pause
- var count:Int = PERIOD
+    var timer:Timer?
+    var state:CounterState = CounterState.pause
+    var count:Int = PERIOD
     var idleCount:Int = 0
- var app:AppDelegate?
+    var app:AppDelegate?
  
  func startTimer() {
  timer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true, block: {_ in
@@ -35,7 +35,7 @@ class CountDownTimer {
      }
      
  if (self.state == CounterState.run) {
-     self.state = CounterState.pause
+     //self.state = CounterState.pause
      let value: Int = self.count
      self.app?.setMenuText(text:String(value))
      self.count -= 1
@@ -56,6 +56,8 @@ class CountDownTimer {
          NotificationCenter.default.post(name: Notification.Name("ShowMainWindow"), object: nil)
  
          self.count = PERIOD
+         updateCountForCurrentDay()
+         self.app?.setDayOfWeekCounts(dayOfWeekCounts:dayOfWeekCounts)
      }
     }
  })
@@ -74,4 +76,39 @@ class CountDownTimer {
      self.app = appDelegate
     }
  }
+
+// Initialize the dictionary with default counts for each day of the week.
+var dayOfWeekCounts: [String: Int] = [
+    "Monday": 0,
+    "Tuesday": 0,
+    "Wednesday": 0,
+    "Thursday": 0,
+    "Friday": 0,
+    "Saturday": 0,
+    "Sunday": 0
+]
+
+var g_dayOfWeek = ""
+
+// Function to update the count for the current day of the week.
+func updateCountForCurrentDay() {
+    // Get the current date.
+    let currentDate = Date()
+    let calendar = Calendar.current
+    
+    // Extract the day of the week as a string (e.g., "Monday").
+    let dayOfWeek = calendar.weekdaySymbols[calendar.component(.weekday, from: currentDate) - 1]
+    if (g_dayOfWeek != dayOfWeek) {
+        if g_dayOfWeek != "" {
+            dayOfWeekCounts[g_dayOfWeek] = 0
+        }
+        g_dayOfWeek = dayOfWeek
+    }
+    // Update the count for the current day.
+    if let currentCount = dayOfWeekCounts[dayOfWeek] {
+        dayOfWeekCounts[dayOfWeek] = currentCount + 1
+    }
+    
+    print("Updated count for \(dayOfWeek): \(dayOfWeekCounts[dayOfWeek] ?? 0)")
+}
  
