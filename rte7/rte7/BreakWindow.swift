@@ -32,6 +32,7 @@ struct BreakWindow: View {
 struct BreakView: View {
     @StateObject private var viewModel = QuoteViewModel()
     @Environment(\.dismiss) var dismiss
+    @State private var didAppear = false
 
     var body: some View {
         VStack {
@@ -48,7 +49,13 @@ dismiss()
             }*/
                     }
                     .frame(width: 600, height: 200)
-        }
+                    .onAppear {
+                        if !didAppear {
+                            didAppear = true
+                            viewModel.getQuote()
+                        }
+                    }
+    }
     
 }
 
