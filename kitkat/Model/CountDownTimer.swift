@@ -35,8 +35,8 @@ class CountDownTimer {
                 self.count = PERIOD
                 self.idleCount = 0
             }
-                
- 
+
+
             if self.state == CounterState.run {
                 self.state = CounterState.pause
                 self.count -= 1
@@ -80,6 +80,8 @@ class CountDownTimer {
 
     private func publishCountdown() {
         app?.setMenuText(text: String(self.count))
+        app?.setIdleCount(count: self.idleCount)
+        app?.setRemainingSeconds(seconds: self.count * 60)
     }
 }
 

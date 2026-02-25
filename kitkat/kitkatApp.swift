@@ -17,13 +17,15 @@ struct kitkatApp: App {
    @State var cancellable: AnyObject? = nil
    @State var cancellable2: AnyObject? = nil
    @State var cancellable3: AnyObject? = nil
+   @State var cancellable4: AnyObject? = nil
    @State private var isWindowVisible = false
    @State private var dayOfTheWeekCounts: [String: Int] = DayOfTheWeekCounterStore.load()
    @State private var remainingSeconds: Int = PERIOD * 60
+   @State private var idleCount: Int = 0
     
     var body: some Scene {
         WindowGroup {
-            ContentView(dayOfWeekCounts: $dayOfTheWeekCounts, menuText: $menuText)
+            ContentView(dayOfWeekCounts: $dayOfTheWeekCounts, menuText: $menuText, idleCount: $idleCount)
                 .environmentObject(windowController)
                 .onAppear() {
                     self.cancellable = appDelegate.$menuText.sink { text in
@@ -35,11 +37,15 @@ struct kitkatApp: App {
                     self.cancellable3 = appDelegate.$remainingSeconds.sink { seconds in
                         self.remainingSeconds = seconds
                     }
+                    self.cancellable4 = appDelegate.$idleCount.sink { count in
+                        self.idleCount = count
+                    }
                 }
                 .onDisappear {
                     self.cancellable = nil
                     self.cancellable2 = nil
                     self.cancellable3 = nil
+                    self.cancellable4 = nil
                 }
         }
         .windowStyle(.hiddenTitleBar)
@@ -57,6 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @Published var menuText:String = "30"
     @Published var dayOfTheWeekCounts: [String:Int] = ["Monday":0]
     @Published var remainingSeconds: Int = PERIOD * 60
+    @Published var idleCount: Int = 0
     var window:NSWindow?
     
     var globalEventMonitor: GlobalEventMonitor!
@@ -131,5 +138,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func setRemainingSeconds(seconds: Int) {
         remainingSeconds = seconds
+    }
+
+    func setIdleCount(count: Int) {
+        idleCount = count
     }
 }

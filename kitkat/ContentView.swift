@@ -16,6 +16,7 @@ struct IdentifiableString: Identifiable {
 struct ContentView: View {
     @Binding var dayOfWeekCounts: [String:Int]
     @Binding var menuText: String
+    @Binding var idleCount: Int
     // @EnvironmentObject var windowController: WindowController
     var body: some View {
         VStack(spacing: 24) {
@@ -23,9 +24,30 @@ struct ContentView: View {
                 Text("KitKat. Take a Break")
                     .font(.headline)
                     .foregroundStyle(.secondary)
-                Text(formattedTime)
-                    .font(.system(size: 56, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(.primary)
+                HStack(alignment: .center, spacing: 24) {
+                    Label {
+                        Text(formattedTime)
+                            .font(.system(size: 56, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(.primary)
+                    } icon: {
+                        Image(systemName: "timer")
+                            .font(.title)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Divider()
+                        .frame(height: 44)
+
+                    Label {
+                        Text("Idle count: \(idleCount)")
+                            .font(.system(size: 24, weight: .medium, design: .monospaced))
+                            .foregroundStyle(.primary)
+                    } icon: {
+                        Image(systemName: "pause.circle")
+                            .font(.title2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
                 Text("Next break arrives when the countdown hits zero.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
@@ -82,10 +104,11 @@ struct ContentView_Previews: PreviewProvider {
         "Saturday": 8,
         "Sunday": 4
     ]
-    @State static var menuText: String = "Hello World"
-    
+    @State static var menuText: String = "15"
+    @State static var idleCount: Int = 4
+
     static var previews: some View {
-        ContentView(dayOfWeekCounts: $sampleData, menuText: $menuText)
+        ContentView(dayOfWeekCounts: $sampleData, menuText: $menuText, idleCount: $idleCount)
     }
 }
 
