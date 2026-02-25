@@ -1,5 +1,13 @@
 //
 //  GlobalEventMonitor.swift
+//  kitkat
+//
+//  Created by Richard El-Kadi on 2/23/26.
+//
+
+
+//
+//  GlobalEventMonitor.swift
 //  rte7
 //
 //  Created by Richard El Kadi on 6/4/24.
@@ -18,14 +26,21 @@ import ApplicationServices
      }
  
      func start() {
-         guard AccessibilityPermissionManager.ensureAccessibilityPermissions() else {
-             Logger.shared.log("Accessibility permission not granted", level: .error)
-             return
-         }
-
          counter.continueCounter()
+         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+             self.counter.continueCounter()
+             return event // return nil to consume the event (prevent further handling)
+         }
          monitor = NSEvent.addGlobalMonitorForEvents(matching: [.keyDown, .keyUp], handler: {event in self.handleKeyboardEvent(event)})
          Logger.shared.log("GlobalMonitor added")
+         let promptKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+         let options: CFDictionary = [promptKey: true] as CFDictionary
+         let trusted = AXIsProcessTrustedWithOptions(options)
+         if (trusted) {
+             Logger.shared.log("KitKat is allowed to listen to keyboard input")
+         } else {
+             Logger.shared.log("KitKat is NOT ALLOWED to listen to keyboard input")
+         }
      }
  
      func stop() {

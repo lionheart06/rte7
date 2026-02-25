@@ -8,7 +8,88 @@
 import SwiftUI
 import SwiftData
 
+struct IdentifiableString: Identifiable {
+    let id = UUID()
+    let text: String
+}
+
 struct ContentView: View {
+    @Binding var dayOfWeekCounts: [String:Int]
+    @Binding var menuText: String
+    // @EnvironmentObject var windowController: WindowController
+    var body: some View {
+        VStack(spacing: 24) {
+            VStack(spacing: 8) {
+                Text("KitKat. Take a Break")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                Text(formattedTime)
+                    .font(.system(size: 56, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(.primary)
+                Text("Next break arrives when the countdown hits zero.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(.thinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+
+            GroupBox("Weekly Break Streak") {
+                Table(items) {
+                    TableColumn("Day", value: \.day)
+                    TableColumn("Count") { item in
+                        Text("\(item.count)")
+                            .monospacedDigit()
+                    }
+                }
+                .frame(maxHeight: 220)
+            }
+            .groupBoxStyle(.automatic)
+        }
+        .padding(32)
+    }
+    
+    private var items: [DayCount] {
+        let days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+        
+        var items: [DayCount] = []
+        days.forEach{ day in
+            items.append(DayCount(day:day, count:dayOfWeekCounts[day] ?? 0 ))
+        }
+   
+        return items
+    }
+
+    private var formattedTime: String {
+        return menuText
+    }
+}
+
+struct DayCount:Identifiable {
+    let id = UUID()
+    let day: String
+    let count: Int
+}
+
+struct ContentView_Previews: PreviewProvider {
+    @State static var sampleData: [String: Int] = [
+        "Monday": 5,
+        "Tuesday": 3,
+        "Wednesday": 7,
+        "Thursday": 2,
+        "Friday": 6,
+        "Saturday": 8,
+        "Sunday": 4
+    ]
+    @State static var menuText: String = "Hello World"
+    
+    static var previews: some View {
+        ContentView(dayOfWeekCounts: $sampleData, menuText: $menuText)
+    }
+}
+
+struct ContentView2: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
 
@@ -61,6 +142,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView2()
         .modelContainer(for: Item.self, inMemory: true)
 }
