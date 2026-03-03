@@ -36,12 +36,16 @@ class CountDownTimer {
                 self.idleCount = 0
             }
 
-
+            self.publishCountdown()
             if self.state == CounterState.run {
                 self.state = CounterState.pause
                 self.count -= 1
-                self.publishCountdown()
                 if self.count <= 0 {
+                    self.count = 0
+                }
+                self.publishCountdown()
+                if self.count == 0 {
+                    self.count = PERIOD
                     let content = UNMutableNotificationContent()
                     content.title = "Kitkat"
                     content.body = "Take a break have a kit kat."
@@ -56,9 +60,9 @@ class CountDownTimer {
                         }
                     }
                     NotificationCenter.default.post(name: Notification.Name("ShowMainWindow"), object: nil)
-                    self.publishCountdown()
                     updateCountForCurrentDay()
                     self.app?.setDayOfWeekCounts(dayOfWeekCounts:dayOfWeekCounts)
+                    self.publishCountdown()
                 }
             }
         })

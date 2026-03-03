@@ -28,6 +28,23 @@ struct kitkatApp: App {
             ContentView(dayOfWeekCounts: $dayOfTheWeekCounts, menuText: $menuText, idleCount: $idleCount)
                 .environmentObject(windowController)
                 .onAppear() {
+                    let apiClient = RESTAPIClient(baseURL: "https://favqs.com")
+                    var message:String = ""
+                    
+                    apiClient.request("/api/qotd") { (result: Result<Quote, Error>) in
+                        switch result {
+                        case .success(let quote):
+                            print("Hello \(quote.qotd_date)")
+                            DispatchQueue.main.async {
+                                message = quote.quote.body + " - " + quote.quote.author
+                            }
+                        case .failure(let error):
+                            DispatchQueue.main.async {
+                                message = "Couldn’t load quote. \(error.localizedDescription)"
+                            }
+                        }
+                    }
+                    
                     self.cancellable = appDelegate.$menuText.sink { text in
                         self.menuText = text
                     }

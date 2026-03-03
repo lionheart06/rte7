@@ -29,8 +29,12 @@ struct Quote:Codable {
 class QuoteViewModel: ObservableObject {
     @Published var message: String = "Hello, Custom Window!"
     private let apiClient = RESTAPIClient(baseURL: "https://favqs.com")
-    
+
     func getQuote() {
+        DispatchQueue.main.async {
+            self.message = "Loading..."
+        }
+
         apiClient.request("/api/qotd") { (result: Result<Quote, Error>) in
             switch result {
             case .success(let quote):
@@ -39,7 +43,9 @@ class QuoteViewModel: ObservableObject {
                     self.message = quote.quote.body + " - " + quote.quote.author
                 }
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.message = "Couldn’t load quote. \(error.localizedDescription)"
+                }
             }
         }
     }
