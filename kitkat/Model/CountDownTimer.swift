@@ -117,10 +117,8 @@ func updateCountForCurrentDay() {
     
     // Extract the day of the week as a string (e.g., "Monday").
     let dayOfWeek = calendar.weekdaySymbols[calendar.component(.weekday, from: currentDate) - 1]
-    if (g_dayOfWeek != dayOfWeek) {
-        if g_dayOfWeek != "" {
-            dayOfWeekCounts[g_dayOfWeek] = 0
-        }
+    if g_dayOfWeek != dayOfWeek {
+        dayOfWeekCounts[dayOfWeek] = 0
         g_dayOfWeek = dayOfWeek
     }
     // Update the count for the current day.

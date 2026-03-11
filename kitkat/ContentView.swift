@@ -59,13 +59,31 @@ struct ContentView: View {
 
             GroupBox("Weekly Break Streak") {
                 Table(items) {
-                    TableColumn("Day", value: \.day)
+                    TableColumn("Day") { item in
+                        Text(item.day)
+                            .foregroundStyle(color(for: item.day))
+                            .fontWeight(fontWeight(for: item.day))
+                    }
                     TableColumn("Count") { item in
                         Text("\(item.count)")
                             .monospacedDigit()
+                            .foregroundStyle(color(for: item.day))
+                            .fontWeight(fontWeight(for: item.day))
                     }
                 }
                 .frame(maxHeight: 220)
+            }
+            .groupBoxStyle(.automatic)
+
+            GroupBox("Workweek Average Goal") {
+                HStack {
+                    Text("Average per day to reach")
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text("\(averagePerWorkdayGoal)")
+                        .font(.system(size: 28, weight: .semibold, design: .monospaced))
+                        .monospacedDigit()
+                }
             }
             .groupBoxStyle(.automatic)
         }
@@ -85,6 +103,35 @@ struct ContentView: View {
 
     private var formattedTime: String {
         return menuText
+    }
+
+    private var averagePerWorkdayGoal: Int {
+        let total = dayOfWeekCounts.values.reduce(0, +)
+        let rawAverage = Double(total) / 5.0
+        let base = floor(rawAverage)
+        let fraction = rawAverage - base
+        if fraction >= 0.5 {
+            return Int(ceil(rawAverage))
+        }
+        return Int(base)
+    }
+
+    private var currentDay: String {
+        let calendar = Calendar.current
+        let weekdayIndex = calendar.component(.weekday, from: Date()) - 1
+        return calendar.weekdaySymbols[weekdayIndex]
+    }
+
+    private func color(for day: String) -> Color {
+        isCurrentDay(day) ? Color(red: 0.0, green: 0.35, blue: 0.12) : .primary
+    }
+
+    private func fontWeight(for day: String) -> Font.Weight {
+        isCurrentDay(day) ? .bold : .regular
+    }
+
+    private func isCurrentDay(_ day: String) -> Bool {
+        day == currentDay
     }
 }
 
