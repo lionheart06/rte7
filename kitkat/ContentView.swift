@@ -76,9 +76,22 @@ struct ContentView: View {
             .groupBoxStyle(.automatic)
 
             GroupBox("Workweek Average Goal") {
-                HStack {
-                    Text("Average per day to reach")
-                        .foregroundStyle(.secondary)
+                HStack(alignment: .center, spacing: 16) {
+                    CoffeeCupGoalView(
+                        progress: coffeeFillProgress,
+                        todayCount: todayCount,
+                        goalCount: averagePerWorkdayGoal,
+                        isUnlocked: hasReachedCoffeeGoal
+                    )
+
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Average per day to reach")
+                            .foregroundStyle(.secondary)
+                        Text(hasReachedCoffeeGoal ? "Goal reached for today. Coffee unlocked." : "Fill the cup by matching your daily average.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
                     Spacer()
                     Text("\(averagePerWorkdayGoal)")
                         .font(.system(size: 28, weight: .semibold, design: .monospaced))
@@ -111,6 +124,19 @@ struct ContentView: View {
         return Int(ceil(rawAverage))
     }
 
+    private var todayCount: Int {
+        dayOfWeekCounts[currentDay] ?? 0
+    }
+
+    private var hasReachedCoffeeGoal: Bool {
+        averagePerWorkdayGoal > 0 && todayCount >= averagePerWorkdayGoal
+    }
+
+    private var coffeeFillProgress: Double {
+        guard averagePerWorkdayGoal > 0 else { return 0 }
+        return min(Double(todayCount) / Double(averagePerWorkdayGoal), 1.0)
+    }
+
     private var currentDay: String {
         let calendar = Calendar.current
         let weekdayIndex = calendar.component(.weekday, from: Date()) - 1
@@ -134,6 +160,179 @@ struct DayCount:Identifiable {
     let id = UUID()
     let day: String
     let count: Int
+}
+
+struct CoffeeCupGoalView: View {
+    let progress: Double
+    let todayCount: Int
+    let goalCount: Int
+    let isUnlocked: Bool
+
+    private let cupBodyWidth: CGFloat = 72
+    private let cupHeight: CGFloat = 62
+    private let handleWidth: CGFloat = 22
+
+    private var normalizedProgress: CGFloat {
+        CGFloat(max(0, min(progress, 1)))
+    }
+
+    private var liquidHeight: CGFloat {
+        (cupHeight - 6) * normalizedProgress
+    }
+
+    private var outlineColor: Color {
+        isUnlocked ? Color(red: 0.38, green: 0.20, blue: 0.08) : .secondary
+    }
+
+    var body: some View {
+        VStack(spacing: 6) {
+            ZStack {
+                ZStack {
+                    VStack(spacing: 0) {
+                        if liquidHeight > 0 {
+                            ZStack(alignment: .top) {
+                                Rectangle()
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [
+                                                Color(red: 0.56, green: 0.34, blue: 0.18),
+                                                Color(red: 0.34, green: 0.20, blue: 0.10)
+                                            ],
+                                            startPoint: .top,
+                                            endPoint: .bottom
+                                        )
+                                    )
+
+                                Rectangle()
+                                    .fill(Color(red: 0.77, green: 0.57, blue: 0.36).opacity(0.65))
+                                    .frame(height: 1.5)
+                            }
+                            .frame(height: liquidHeight)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .padding(3)
+                    .clipShape(CoffeeCupBodyShape())
+                    .animation(.easeInOut(duration: 0.35), value: normalizedProgress)
+
+                    CoffeeCupBodyShape()
+                        .stroke(outlineColor, lineWidth: 2)
+                }
+                .frame(width: cupBodyWidth, height: cupHeight)
+
+                CoffeeCupHandleShape()
+                    .stroke(outlineColor, lineWidth: 2)
+                    .frame(width: handleWidth, height: 28)
+                    .offset(x: cupBodyWidth / 2 + 7, y: 4)
+            }
+            .frame(width: cupBodyWidth + handleWidth + 8, height: cupHeight)
+            .overlay(alignment: .top) {
+                if isUnlocked {
+                    Image(systemName: "steam.lines.fill")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(Color(red: 0.45, green: 0.29, blue: 0.18))
+                        .offset(y: -18)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+            }
+
+            if goalCount > 0 {
+                Text("\(todayCount) / \(goalCount)")
+                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+            } else {
+                Text("\(todayCount)")
+                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .frame(minWidth: 92)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityStatus)
+    }
+
+    private var accessibilityStatus: String {
+        if goalCount <= 0 {
+            return "Coffee goal not set yet. \(todayCount) breaks today."
+        }
+        if isUnlocked {
+            return "Coffee unlocked. \(todayCount) of \(goalCount) breaks today."
+        }
+        return "Coffee progress. \(todayCount) of \(goalCount) breaks today."
+    }
+}
+
+struct CoffeeCupBodyShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        let topInset = rect.width * 0.08
+        let bottomInset = rect.width * 0.24
+        let topY = rect.minY + 2
+        let bottomY = rect.maxY - 2
+        let rimRadius = min(7, rect.width * 0.12)
+        let baseRadius = min(6, rect.width * 0.10)
+
+        let topLeft = CGPoint(x: rect.minX + topInset, y: topY)
+        let topRight = CGPoint(x: rect.maxX - topInset, y: topY)
+        let bottomRight = CGPoint(x: rect.maxX - bottomInset, y: bottomY)
+        let bottomLeft = CGPoint(x: rect.minX + bottomInset, y: bottomY)
+
+        var path = Path()
+        path.move(to: CGPoint(x: topLeft.x + rimRadius, y: topLeft.y))
+        path.addLine(to: CGPoint(x: topRight.x - rimRadius, y: topRight.y))
+        path.addQuadCurve(
+            to: CGPoint(x: topRight.x, y: topRight.y + rimRadius),
+            control: topRight
+        )
+        path.addLine(to: CGPoint(x: bottomRight.x, y: bottomRight.y - baseRadius))
+        path.addQuadCurve(
+            to: CGPoint(x: bottomRight.x - baseRadius, y: bottomRight.y),
+            control: bottomRight
+        )
+        path.addLine(to: CGPoint(x: bottomLeft.x + baseRadius, y: bottomLeft.y))
+        path.addQuadCurve(
+            to: CGPoint(x: bottomLeft.x, y: bottomLeft.y - baseRadius),
+            control: bottomLeft
+        )
+        path.addLine(to: CGPoint(x: topLeft.x, y: topLeft.y + rimRadius))
+        path.addQuadCurve(
+            to: CGPoint(x: topLeft.x + rimRadius, y: topLeft.y),
+            control: topLeft
+        )
+        path.closeSubpath()
+        return path
+    }
+}
+
+struct CoffeeCupHandleShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        let outer = rect.insetBy(dx: 1, dy: 1)
+        let outerRadius = min(outer.width, outer.height) / 2
+        let innerRadius = max(outerRadius - 5, 1)
+        let startRadians = -70.0 * Double.pi / 180.0
+
+        var path = Path()
+        path.addArc(
+            center: CGPoint(x: outer.midX, y: outer.midY),
+            radius: outerRadius,
+            startAngle: .degrees(-70),
+            endAngle: .degrees(70),
+            clockwise: false
+        )
+        path.move(to: CGPoint(
+            x: outer.midX + innerRadius * CGFloat(cos(startRadians)),
+            y: outer.midY + innerRadius * CGFloat(sin(startRadians))
+        ))
+        path.addArc(
+            center: CGPoint(x: outer.midX, y: outer.midY),
+            radius: innerRadius,
+            startAngle: .degrees(-70),
+            endAngle: .degrees(70),
+            clockwise: false
+        )
+        return path
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {

@@ -10,10 +10,13 @@
 - Weekly table displays all days.
 - Current day row now highlighted (dark green + bold).
 - Workweek average goal metric is displayed.
+- Coffee-cup progress indicator displays today's progress toward the average goal and unlocks at completion.
 
 ## Recently Completed
 - Fixed daily rollover behavior to reset current day on first update of a new day.
 - Added average-per-workday calculation and UI display.
+- Added coffee-cup UI with animated fill tied to today's count vs average goal, with unlocked state messaging.
+- Reworked coffee-cup drawing to a tapered cup silhouette with true liquid-level fill for clearer affordance.
 - Removed unused variable warning in `kitkatApp` by replacing dead state updates with logging.
 
 ## Known Issues / Risks
