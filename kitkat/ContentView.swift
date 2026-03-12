@@ -108,12 +108,7 @@ struct ContentView: View {
     private var averagePerWorkdayGoal: Int {
         let total = dayOfWeekCounts.values.reduce(0, +)
         let rawAverage = Double(total) / 5.0
-        let base = floor(rawAverage)
-        let fraction = rawAverage - base
-        if fraction >= 0.5 {
-            return Int(ceil(rawAverage))
-        }
-        return Int(base)
+        return Int(ceil(rawAverage))
     }
 
     private var currentDay: String {
