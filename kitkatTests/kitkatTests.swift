@@ -48,6 +48,10 @@ struct RESTAPIClientTests {
                 #expect(Bool(true))
             case .couldNotFormURL:
                 #expect(Bool(false))
+            case .invalidResponse:
+                #expect(Bool(false))
+            case .unexpectedStatusCode:
+                #expect(Bool(false))
             }
         } catch {
             #expect(Bool(false))
