@@ -12,6 +12,7 @@
 - Workweek average goal metric is displayed.
 - Daily target now has an enforced minimum of `5`, and increases only when computed average exceeds `5`.
 - Coffee-cup progress indicator displays today's progress toward the average goal and unlocks at completion.
+- Keyboard listener status now appears in the main window with connected/disconnected icon states.
 
 ## Recently Completed
 - Added `WorkweekGoalCalculator` as a shared goal-computation helper.
@@ -23,6 +24,14 @@
 - Added coffee-cup UI with animated fill tied to today's count vs average goal, with unlocked state messaging.
 - Reworked coffee-cup drawing to a tapered cup silhouette with true liquid-level fill for clearer affordance.
 - Removed unused variable warning in `kitkatApp` by replacing dead state updates with logging.
+- Added keyboard access status pipeline:
+  - `GlobalEventMonitor` now reports AX trust status through a delegate.
+  - `AppDelegate` now publishes `keyboardAccessStatus`.
+  - App performs non-prompt permission refresh on app activation and a 5-second poll timer.
+- Added keyboard status UI in `ContentView` using SF Symbols:
+  - connected: `keyboard.fill` (green)
+  - disconnected: `keyboard.badge.exclamationmark`
+- Added unit tests for keyboard status mapping and refresh behavior in monitor + app delegate flow.
 
 ## Known Issues / Risks
 - Full `xcodebuild test` execution is unstable in this environment due launcher assertion.

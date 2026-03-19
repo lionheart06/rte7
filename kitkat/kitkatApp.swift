@@ -22,10 +22,17 @@ struct kitkatApp: App {
    @State private var dayOfTheWeekCounts: [String: Int] = DayOfTheWeekCounterStore.load()
    @State private var remainingSeconds: Int = PERIOD * 60
    @State private var idleCount: Int = 0
+   @State private var keyboardAccessStatus: KeyboardAccessStatus = .disconnected
+   @State var cancellable5: AnyObject? = nil
     
     var body: some Scene {
         WindowGroup {
-            ContentView(dayOfWeekCounts: $dayOfTheWeekCounts, menuText: $menuText, idleCount: $idleCount)
+            ContentView(
+                dayOfWeekCounts: $dayOfTheWeekCounts,
+                menuText: $menuText,
+                idleCount: $idleCount,
+                keyboardAccessStatus: $keyboardAccessStatus
+            )
                 .environmentObject(windowController)
                 .onAppear() {
                     let apiClient = RESTAPIClient(baseURL: "https://favqs.com")
@@ -51,12 +58,16 @@ struct kitkatApp: App {
                     self.cancellable4 = appDelegate.$idleCount.sink { count in
                         self.idleCount = count
                     }
+                    self.cancellable5 = appDelegate.$keyboardAccessStatus.sink { status in
+                        self.keyboardAccessStatus = status
+                    }
                 }
                 .onDisappear {
                     self.cancellable = nil
                     self.cancellable2 = nil
                     self.cancellable3 = nil
                     self.cancellable4 = nil
+                    self.cancellable5 = nil
                 }
         }
         .windowStyle(.hiddenTitleBar)
@@ -70,20 +81,24 @@ struct kitkatApp: App {
     }
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, GlobalEventMonitorDelegate {
     @Published var menuText:String = "30"
     @Published var dayOfTheWeekCounts: [String:Int] = ["Monday":0]
     @Published var remainingSeconds: Int = PERIOD * 60
     @Published var idleCount: Int = 0
+    @Published var keyboardAccessStatus: KeyboardAccessStatus = .disconnected
     var window:NSWindow?
     
-    var globalEventMonitor: GlobalEventMonitor!
+    var globalEventMonitor: (any KeyboardAccessMonitoring)!
     var countDownTimer: CountDownTimer!
+    private var keyboardAccessRefreshTimer: Timer?
     
     override init() {
         countDownTimer = CountDownTimer()
         globalEventMonitor = GlobalEventMonitor(counter:countDownTimer)
         dayOfTheWeekCounts = DayOfTheWeekCounterStore.load()
+        super.init()
+        globalEventMonitor.delegate = self
     }
     
     func applicationDidFinishLaunching(_ notification:Notification) {
@@ -122,6 +137,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
         countDownTimer.startTimer()
         globalEventMonitor.start()
+        startKeyboardAccessRefreshTimer()
+    }
+
+    func applicationDidBecomeActive(_ notification: Notification) {
+        refreshKeyboardAccessStatusForAppActivation()
     }
     
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -135,8 +155,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
     
     func applicationWillTerminate(_ notification:Notification) {
-        //globalEventMonitor.stop()
-        // countDownTimer.stopTimer()
+        keyboardAccessRefreshTimer?.invalidate()
+        keyboardAccessRefreshTimer = nil
+        globalEventMonitor.stop()
     }
     
     func setMenuText(text:String) {
@@ -153,5 +174,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func setIdleCount(count: Int) {
         idleCount = count
+    }
+
+    func globalEventMonitor(
+        _ monitor: GlobalEventMonitor,
+        didUpdateKeyboardAccessStatus status: KeyboardAccessStatus
+    ) {
+        DispatchQueue.main.async {
+            self.keyboardAccessStatus = status
+        }
+    }
+
+    func refreshKeyboardAccessStatusForAppActivation() {
+        globalEventMonitor.refreshKeyboardAccessStatus(promptForPermission: false)
+    }
+
+    func refreshKeyboardAccessStatusForPeriodicPolling() {
+        globalEventMonitor.refreshKeyboardAccessStatus(promptForPermission: false)
+    }
+
+    private func startKeyboardAccessRefreshTimer() {
+        keyboardAccessRefreshTimer?.invalidate()
+        keyboardAccessRefreshTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+            self?.refreshKeyboardAccessStatusForPeriodicPolling()
+        }
     }
 }

@@ -3,6 +3,31 @@
 ## Current Focus
 - Stabilize and clarify the day-of-week counting semantics.
 - Improve weekly table readability and progress cues.
+- Surface keyboard-listener permission status in the main window.
+
+## Recent Changes (March 19, 2026)
+- Added keyboard access status model and monitor abstractions:
+  - `KeyboardAccessStatus` (`.connected` / `.disconnected`) with shared icon/text semantics.
+  - `KeyboardAccessTrustChecking` + `AXKeyboardAccessTrustChecker` for prompt vs non-prompt AX checks.
+  - `KeyboardAccessMonitoring` protocol to make app-level refresh flows testable.
+- Updated `GlobalEventMonitor`:
+  - Added delegate callback for keyboard access status updates.
+  - Added `refreshKeyboardAccessStatus(promptForPermission:)`.
+  - `start()` now performs one prompt-enabled status check.
+  - `stop()` now removes both local and global event monitors.
+- Updated app wiring in `kitkatApp` / `AppDelegate`:
+  - Added `@Published keyboardAccessStatus`.
+  - Added 5-second periodic status polling and app-activation refresh (both non-prompt).
+  - Bound status into SwiftUI state with an additional Combine sink.
+- Updated `ContentView`:
+  - Added a keyboard status row in the main window.
+  - Connected state uses `keyboard.fill` tinted green.
+  - Disconnected state uses `keyboard.badge.exclamationmark` with warning tint.
+- Added unit tests covering:
+  - status icon/text mappings,
+  - trusted/untrusted mapping in monitor refresh,
+  - prompt-enabled vs unprompted refresh path,
+  - app-activation and periodic refresh behavior dispatch.
 
 ## Recent Changes (March 11-12, 2026)
 - Added `WorkweekGoalCalculator.dailyTarget(from:)` to centralize goal computation.
