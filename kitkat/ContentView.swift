@@ -87,7 +87,7 @@ struct ContentView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Average per day to reach")
                             .foregroundStyle(.secondary)
-                        Text(hasReachedCoffeeGoal ? "Goal reached for today. Coffee unlocked." : "Fill the cup by matching your daily average.")
+                        Text(hasReachedCoffeeGoal ? "Goal reached for today. Coffee unlocked." : "Fill the cup by meeting your daily goal.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -119,9 +119,7 @@ struct ContentView: View {
     }
 
     private var averagePerWorkdayGoal: Int {
-        let total = dayOfWeekCounts.values.reduce(0, +)
-        let rawAverage = Double(total) / 5.0
-        return Int(ceil(rawAverage))
+        WorkweekGoalCalculator.dailyTarget(from: dayOfWeekCounts)
     }
 
     private var todayCount: Int {
@@ -129,11 +127,10 @@ struct ContentView: View {
     }
 
     private var hasReachedCoffeeGoal: Bool {
-        averagePerWorkdayGoal > 0 && todayCount >= averagePerWorkdayGoal
+        todayCount >= averagePerWorkdayGoal
     }
 
     private var coffeeFillProgress: Double {
-        guard averagePerWorkdayGoal > 0 else { return 0 }
         return min(Double(todayCount) / Double(averagePerWorkdayGoal), 1.0)
     }
 
@@ -236,17 +233,10 @@ struct CoffeeCupGoalView: View {
                 }
             }
 
-            if goalCount > 0 {
-                Text("\(todayCount) / \(goalCount)")
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
-                    .monospacedDigit()
-                    .foregroundStyle(.secondary)
-            } else {
-                Text("\(todayCount)")
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
-                    .monospacedDigit()
-                    .foregroundStyle(.secondary)
-            }
+            Text("\(todayCount) / \(goalCount)")
+                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .monospacedDigit()
+                .foregroundStyle(.secondary)
         }
         .frame(minWidth: 92)
         .accessibilityElement(children: .combine)
@@ -254,9 +244,6 @@ struct CoffeeCupGoalView: View {
     }
 
     private var accessibilityStatus: String {
-        if goalCount <= 0 {
-            return "Coffee goal not set yet. \(todayCount) breaks today."
-        }
         if isUnlocked {
             return "Coffee unlocked. \(todayCount) of \(goalCount) breaks today."
         }

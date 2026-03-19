@@ -71,3 +71,40 @@ struct RESTAPIClientTests {
         #expect(exceptions == ["localhost", "127.0.0.1", ".example.com"])
     }
 }
+
+struct WorkweekGoalCalculatorTests {
+    @Test func dailyTarget_returnsFiveWhenTotalIsZero() {
+        let goal = WorkweekGoalCalculator.dailyTarget(from: [:])
+        #expect(goal == 5)
+    }
+
+    @Test func dailyTarget_returnsFiveWhenAverageIsFour() {
+        let dayCounts = ["Monday": 20]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
+        #expect(goal == 5)
+    }
+
+    @Test func dailyTarget_returnsFiveWhenAverageIsExactlyFive() {
+        let dayCounts = ["Monday": 25]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
+        #expect(goal == 5)
+    }
+
+    @Test func dailyTarget_roundsUpWhenAverageIsFivePointTwo() {
+        let dayCounts = ["Monday": 26]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
+        #expect(goal == 6)
+    }
+
+    @Test func dailyTarget_roundsUpWhenAverageIsFivePointEight() {
+        let dayCounts = ["Monday": 29]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
+        #expect(goal == 6)
+    }
+
+    @Test func dailyTarget_usesAllDaysTotalWithDivisorFive() {
+        let dayCounts = ["Saturday": 30]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
+        #expect(goal == 6)
+    }
+}

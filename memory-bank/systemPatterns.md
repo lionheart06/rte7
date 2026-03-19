@@ -6,7 +6,8 @@
 - Timer engine: `CountDownTimer` drives countdown + break trigger.
 - Input signal: `GlobalEventMonitor` marks user activity via keyboard events.
 - Persistence: `DayOfTheWeekCounterStore` reads/writes weekday counts from `UserDefaults`.
-- UI: `ContentView` renders timer, idle count, weekly table, and average metric.
+- Goal calculation: `WorkweekGoalCalculator` computes the displayed daily target.
+- UI: `ContentView` renders timer, idle count, weekly table, and average/goal metric.
 
 ## Core Runtime Flow
 1. `AppDelegate` creates `CountDownTimer` + `GlobalEventMonitor`.
@@ -30,3 +31,4 @@
 - Global in-memory dictionary `dayOfWeekCounts` initialized from store defaults + persisted values.
 - `updateCountForCurrentDay()` does day rollover reset for current day then increments.
 - Store writes full dictionary each update.
+- Daily goal target derives from counts via `WorkweekGoalCalculator.dailyTarget(from:)` using `max(5, ceil(totalAcrossAllDays / 5.0))`.

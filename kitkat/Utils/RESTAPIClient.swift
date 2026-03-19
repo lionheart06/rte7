@@ -46,6 +46,8 @@ final class RESTAPIClient {
     enum RESTAPIClientError: LocalizedError {
         case invalidBaseURL(String)
         case couldNotFormURL(baseURL: String, endpoint: String)
+        case invalidResponse
+        case unexpectedStatusCode(Int)
 
         var errorDescription: String? {
             switch self {
@@ -53,6 +55,10 @@ final class RESTAPIClient {
                 return "Invalid base URL: \(baseURL)"
             case .couldNotFormURL(let baseURL, let endpoint):
                 return "Couldn’t form URL from baseURL=\(baseURL) and endpoint=\(endpoint)"
+            case .invalidResponse:
+                return "Received an invalid response from server."
+            case .unexpectedStatusCode(let statusCode):
+                return "Server returned unexpected status code: \(statusCode)"
             }
         }
     }
@@ -62,47 +68,87 @@ final class RESTAPIClient {
                              method: HTTPMethod = .get,
                              parameters: [String: Any]? = nil,
                              completion: @escaping (Result<T, Error>) -> Void) {
-        
-        let url: URL
+        var request: URLRequest
         do {
-            url = try makeURL(endpoint: endpoint)
+            request = try buildRequest(endpoint: endpoint, method: method, parameters: parameters)
         } catch {
             completion(.failure(error))
             return
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        if let parameters = parameters {
-            do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
-            } catch {
+
+        execute(request: request) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let decodedObject = try JSONDecoder().decode(T.self, from: data)
+                    completion(.success(decodedObject))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
                 completion(.failure(error))
-                return
             }
         }
-        
-        let task = session.dataTask(with: request) { (data, response, error) in
+    }
+
+    func requestVoid(_ endpoint: String,
+                     method: HTTPMethod = .post,
+                     parameters: [String: Any]? = nil,
+                     completion: @escaping (Result<Void, Error>) -> Void) {
+        var request: URLRequest
+        do {
+            request = try buildRequest(endpoint: endpoint, method: method, parameters: parameters)
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        execute(request: request) { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    private func buildRequest(endpoint: String,
+                              method: HTTPMethod,
+                              parameters: [String: Any]?) throws -> URLRequest {
+        let url = try makeURL(endpoint: endpoint)
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        if let parameters = parameters {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        }
+
+        return request
+    }
+
+    private func execute(request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) {
+        let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(RESTAPIClientError.invalidResponse))
                 return
             }
-            
-            do {
-                let decodedObject = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(decodedObject))
-            } catch {
-                completion(.failure(error))
+
+            guard (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(RESTAPIClientError.unexpectedStatusCode(httpResponse.statusCode)))
+                return
             }
+
+            completion(.success(data ?? Data()))
         }
-        
+
         task.resume()
     }
 
