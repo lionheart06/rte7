@@ -17,6 +17,7 @@ struct ContentView: View {
     @Binding var dayOfWeekCounts: [String:Int]
     @Binding var menuText: String
     @Binding var idleCount: Int
+    @Binding var keyboardAccessStatus: KeyboardAccessStatus
     // @EnvironmentObject var windowController: WindowController
     var body: some View {
         VStack(spacing: 24) {
@@ -24,6 +25,20 @@ struct ContentView: View {
                 Text("KitKat. Take a Break")
                     .font(.headline)
                     .foregroundStyle(.secondary)
+
+                HStack(spacing: 8) {
+                    Image(systemName: keyboardAccessStatus.iconSystemName)
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(
+                            keyboardAccessStatus == .connected ? .green : Color.orange
+                        )
+                    Text(keyboardAccessStatus.accessibilityText)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.secondary)
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(keyboardAccessStatus.accessibilityText)
+
                 HStack(alignment: .center, spacing: 24) {
                     Label {
                         Text(formattedTime)
@@ -334,9 +349,15 @@ struct ContentView_Previews: PreviewProvider {
     ]
     @State static var menuText: String = "15"
     @State static var idleCount: Int = 4
+    @State static var keyboardAccessStatus: KeyboardAccessStatus = .connected
 
     static var previews: some View {
-        ContentView(dayOfWeekCounts: $sampleData, menuText: $menuText, idleCount: $idleCount)
+        ContentView(
+            dayOfWeekCounts: $sampleData,
+            menuText: $menuText,
+            idleCount: $idleCount,
+            keyboardAccessStatus: $keyboardAccessStatus
+        )
     }
 }
 

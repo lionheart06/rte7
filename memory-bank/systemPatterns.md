@@ -5,6 +5,7 @@
 - Coordination: `AppDelegate` owns runtime services and published app state.
 - Timer engine: `CountDownTimer` drives countdown + break trigger.
 - Input signal: `GlobalEventMonitor` marks user activity via keyboard events.
+- Keyboard access state: `GlobalEventMonitor` reports AX-trust status to `AppDelegate`.
 - Persistence: `DayOfTheWeekCounterStore` reads/writes weekday counts from `UserDefaults`.
 - Goal calculation: `WorkweekGoalCalculator` computes the displayed daily target.
 - UI: `ContentView` renders timer, idle count, weekly table, and average/goal metric.
@@ -22,9 +23,13 @@
 - break window is shown
 - day count is updated/persisted
 - published state is pushed to SwiftUI.
+6. Keyboard access status updates:
+- Prompt-enabled trust check on monitor start.
+- Non-prompt trust checks on app activation and periodic polling.
+- `AppDelegate` publishes `keyboardAccessStatus` to SwiftUI bindings.
 
 ## State Propagation Pattern
-- `AppDelegate` exposes `@Published` properties (`menuText`, `dayOfTheWeekCounts`, `remainingSeconds`, `idleCount`).
+- `AppDelegate` exposes `@Published` properties (`menuText`, `dayOfTheWeekCounts`, `remainingSeconds`, `idleCount`, `keyboardAccessStatus`).
 - `kitkatApp` subscribes with Combine sinks and binds into `ContentView`.
 
 ## Data Pattern: Weekday Counts
