@@ -4,6 +4,7 @@
 - Stabilize and clarify the day-of-week counting semantics.
 - Improve weekly table readability and progress cues.
 - Surface keyboard-listener permission status in the main window.
+- Add rolling date-level history and weekday average analytics (Mon-Fri).
 
 ## Recent Changes (March 19, 2026)
 - Added keyboard access status model and monitor abstractions:
@@ -28,6 +29,30 @@
   - trusted/untrusted mapping in monitor refresh,
   - prompt-enabled vs unprompted refresh path,
   - app-activation and periodic refresh behavior dispatch.
+
+## Recent Changes (March 23, 2026)
+- Added date-level break history persistence:
+  - New `DailyCountHistoryStore` in `UserDefaults` with `yyyy-MM-dd` local date keys.
+  - Added rolling retention pruning to keep only last 13 weeks:
+    - Window start = current week Monday minus 12 weeks.
+- Added `WeekdayAverageCalculator`:
+  - Computes Monday-Friday averages from retained date history.
+  - Skips missing/zero-count days from the denominator.
+  - Ignores Saturday/Sunday in output rows.
+- Updated break trigger pipeline in `CountDownTimer`:
+  - Each break now updates both legacy weekday counts and date-level history.
+  - AppDelegate receives/publishes updated history dictionary.
+- Updated app/view state wiring:
+  - `kitkatApp` now binds and forwards `dailyHistoryCounts`.
+  - `ContentView` now renders a "Weekday Averages (Last 13 Weeks)" bar chart for Mon-Fri.
+  - The average-per-day table was removed from this section by request.
+  - Bar marks are intentionally narrow to reduce visual heaviness.
+  - The weekday bar chart section now sits side-by-side with the daily streak table.
+  - Daily streak table height is fixed to keep all rows visible.
+- Added tests:
+  - Store bootstrap/load/save/prune behavior.
+  - Weekday average skip-missing-day and boundary behavior.
+  - Integration-style test for break update increment + prune path.
 
 ## Recent Changes (March 11-12, 2026)
 - Added `WorkweekGoalCalculator.dailyTarget(from:)` to centralize goal computation.
@@ -59,7 +84,12 @@
 - Current day is emphasized in the weekly table for fast scanning.
 - Daily target uses `max(5, ceil(totalAcrossAllDays / 5.0))`.
 - Counts are persisted via `DayOfTheWeekCounterStore` in `UserDefaults`.
+- Date-level history uses `DailyCountHistoryStore` and keeps a rolling 13-week window.
+- Weekday average UI shows weekdays only (Mon-Fri) as a bar chart (no weekday-average table).
+- Weekday average values are now integer-only and always rounded up; no float average type is used.
+- Weekday averages now divide only by weekdays that have `count > 0` data in the 13-week window.
 
 ## Open Considerations
 - If product expectation changes, revisit whether `.5` should round down instead.
 - Day reset only occurs when `updateCountForCurrentDay()` runs (i.e., at break completion), not at midnight.
+- Legacy `dayOfWeekCounts` global and date-level `dailyHistoryCounts` global are both still present in `CountDownTimer.swift`; consider moving into a dedicated service/model.

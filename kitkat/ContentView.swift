@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Charts
 
 struct IdentifiableString: Identifiable {
     let id = UUID()
@@ -15,6 +16,7 @@ struct IdentifiableString: Identifiable {
 
 struct ContentView: View {
     @Binding var dayOfWeekCounts: [String:Int]
+    @Binding var dailyHistoryCounts: [String:Int]
     @Binding var menuText: String
     @Binding var idleCount: Int
     @Binding var keyboardAccessStatus: KeyboardAccessStatus
@@ -72,23 +74,56 @@ struct ContentView: View {
             .background(.thinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
-            GroupBox("Weekly Break Streak") {
-                Table(items) {
-                    TableColumn("Day") { item in
-                        Text(item.day)
-                            .foregroundStyle(color(for: item.day))
-                            .fontWeight(fontWeight(for: item.day))
+            HStack(alignment: .top, spacing: 16) {
+                GroupBox("Daily Streak") {
+                    Table(items) {
+                        TableColumn("Day") { item in
+                            Text(item.day)
+                                .foregroundStyle(color(for: item.day))
+                                .fontWeight(fontWeight(for: item.day))
+                        }
+                        TableColumn("Count") { item in
+                            Text("\(item.count)")
+                                .monospacedDigit()
+                                .foregroundStyle(color(for: item.day))
+                                .fontWeight(fontWeight(for: item.day))
+                        }
                     }
-                    TableColumn("Count") { item in
-                        Text("\(item.count)")
-                            .monospacedDigit()
+                    .frame(height: dailyStreakTableHeight)
+                }
+                .frame(maxWidth: .infinity)
+                .groupBoxStyle(.automatic)
+
+                GroupBox("Weekday Averages (Last 13 Weeks)") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Chart(weekdayAverageItems) { item in
+                            BarMark(
+                                x: .value("Weekday", item.day),
+                                y: .value("Average", item.average),
+                                width: .fixed(14)
+                            )
                             .foregroundStyle(color(for: item.day))
-                            .fontWeight(fontWeight(for: item.day))
+                            .annotation(position: .top, spacing: 4) {
+                                Text("\(item.average)")
+                                    .font(.caption2.monospacedDigit())
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .chartYScale(domain: 0...averageChartUpperBound)
+                        .chartYAxis {
+                            AxisMarks(position: .leading)
+                        }
+                        .frame(height: 220)
+
+                        Text("Rounded up average breaks per weekday (only days with data, Monday-Friday).")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                 }
-                .frame(maxHeight: 220)
+                .frame(maxWidth: .infinity)
+                .groupBoxStyle(.automatic)
             }
-            .groupBoxStyle(.automatic)
+            .frame(maxWidth: .infinity)
 
             GroupBox("Workweek Average Goal") {
                 HStack(alignment: .center, spacing: 16) {
@@ -131,6 +166,18 @@ struct ContentView: View {
 
     private var formattedTime: String {
         return menuText
+    }
+
+    private var weekdayAverageItems: [WeekdayAverageRow] {
+        WeekdayAverageCalculator.averageRows(from: dailyHistoryCounts)
+    }
+
+    private var averageChartUpperBound: Int {
+        max(1, (weekdayAverageItems.map(\.average).max() ?? 0) + 1)
+    }
+
+    private var dailyStreakTableHeight: CGFloat {
+        260
     }
 
     private var averagePerWorkdayGoal: Int {
@@ -350,10 +397,23 @@ struct ContentView_Previews: PreviewProvider {
     @State static var menuText: String = "15"
     @State static var idleCount: Int = 4
     @State static var keyboardAccessStatus: KeyboardAccessStatus = .connected
+    @State static var sampleDailyHistoryData: [String: Int] = [
+        "2026-01-05": 4,
+        "2026-01-06": 2,
+        "2026-01-07": 5,
+        "2026-01-08": 3,
+        "2026-01-09": 1,
+        "2026-01-12": 3,
+        "2026-01-13": 4,
+        "2026-01-14": 6,
+        "2026-01-15": 2,
+        "2026-01-16": 4
+    ]
 
     static var previews: some View {
         ContentView(
             dayOfWeekCounts: $sampleData,
+            dailyHistoryCounts: $sampleDailyHistoryData,
             menuText: $menuText,
             idleCount: $idleCount,
             keyboardAccessStatus: $keyboardAccessStatus

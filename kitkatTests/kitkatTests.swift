@@ -114,6 +114,201 @@ struct WorkweekGoalCalculatorTests {
     }
 }
 
+struct DailyCountHistoryStoreTests {
+    @Test func load_returnsEmptyHistoryWhenStorageHasNoData() throws {
+        let isolatedDefaults = try makeIsolatedUserDefaults(suffix: "bootstrap")
+        let userDefaults = isolatedDefaults.userDefaults
+
+        let loaded = DailyCountHistoryStore.load(userDefaults: userDefaults)
+
+        #expect(loaded.isEmpty)
+        clear(userDefaults: userDefaults, suiteName: isolatedDefaults.suiteName)
+    }
+
+    @Test func saveAndLoad_roundTripsPersistedHistory() throws {
+        let isolatedDefaults = try makeIsolatedUserDefaults(suffix: "roundtrip")
+        let userDefaults = isolatedDefaults.userDefaults
+        let history = [
+            "2026-03-23": 3,
+            "2026-03-24": 5
+        ]
+
+        DailyCountHistoryStore.save(history, userDefaults: userDefaults)
+        let loaded = DailyCountHistoryStore.load(userDefaults: userDefaults)
+
+        #expect(loaded == history)
+        clear(userDefaults: userDefaults, suiteName: isolatedDefaults.suiteName)
+    }
+
+    @Test func prunedHistory_keepsBoundaryDateAndDropsOlderEntries() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 23, calendar: calendar)
+
+        let pruned = DailyCountHistoryStore.prunedHistory(
+            [
+                "2025-12-28": 99,
+                "2025-12-29": 4,
+                "2026-03-20": 7
+            ],
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+
+        #expect(pruned["2025-12-28"] == nil)
+        #expect(pruned["2025-12-29"] == 4)
+        #expect(pruned["2026-03-20"] == 7)
+    }
+}
+
+struct WeekdayAverageCalculatorTests {
+    @Test func weekdayAverages_skipMissingDaysFromDenominator() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2026-03-23": 13
+        ]
+
+        let averages = WeekdayAverageCalculator.weekdayAverages(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+
+        #expect(averages["Monday"] == 13)
+        #expect(averages["Tuesday"] == 0)
+        #expect(averages["Wednesday"] == 0)
+    }
+
+    @Test func weekdayAverages_bucketCountsByMatchingWeekday() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2026-03-23": 10,
+            "2026-03-24": 6
+        ]
+
+        let averages = WeekdayAverageCalculator.weekdayAverages(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+
+        #expect(averages["Monday"] == 10)
+        #expect(averages["Tuesday"] == 6)
+        #expect(averages["Friday"] == 0)
+    }
+
+    @Test func weekdayAverages_alwaysRoundUpFractionalAverages() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2026-03-23": 3,
+            "2026-03-16": 2
+        ]
+
+        let averages = WeekdayAverageCalculator.weekdayAverages(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+
+        #expect(averages["Monday"] == 3)
+    }
+
+    @Test func weekdayAverages_excludesWeekendRows() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2026-03-21": 20,
+            "2026-03-22": 30
+        ]
+
+        let averages = WeekdayAverageCalculator.weekdayAverages(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+
+        #expect(averages.keys.count == 5)
+        #expect(averages["Saturday"] == nil)
+        #expect(averages["Sunday"] == nil)
+    }
+
+    @Test func weekdayAverages_ignoreEntriesOlderThanRollingWindow() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2025-12-22": 1300,
+            "2025-12-29": 13
+        ]
+
+        let averages = WeekdayAverageCalculator.weekdayAverages(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+
+        #expect(averages["Monday"] == 13)
+    }
+}
+
+struct DailyHistoryBreakUpdateIntegrationTests {
+    @Test func updateDailyHistoryForCurrentDay_incrementsTodayAndPrunesOldEntries() throws {
+        let isolatedDefaults = try makeIsolatedUserDefaults(suffix: "integration")
+        let userDefaults = isolatedDefaults.userDefaults
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+
+        DailyCountHistoryStore.save(
+            [
+                "2025-12-22": 50,
+                "2026-03-27": 1
+            ],
+            userDefaults: userDefaults
+        )
+        dailyHistoryCounts = [:]
+
+        let updated = updateDailyHistoryForCurrentDay(
+            on: referenceDate,
+            calendar: calendar,
+            userDefaults: userDefaults
+        )
+
+        #expect(updated["2025-12-22"] == nil)
+        #expect(updated["2026-03-27"] == 2)
+        #expect(DailyCountHistoryStore.load(userDefaults: userDefaults)["2026-03-27"] == 2)
+        clear(userDefaults: userDefaults, suiteName: isolatedDefaults.suiteName)
+    }
+}
+
+private func makeIsolatedUserDefaults(suffix: String) throws -> (userDefaults: UserDefaults, suiteName: String) {
+    let suiteName = "kitkat.tests.\(suffix).\(UUID().uuidString)"
+    guard let userDefaults = UserDefaults(suiteName: suiteName) else {
+        throw NSError(domain: "kitkatTests", code: 1)
+    }
+    userDefaults.removePersistentDomain(forName: suiteName)
+    return (userDefaults, suiteName)
+}
+
+private func clear(userDefaults: UserDefaults, suiteName: String) {
+    userDefaults.removePersistentDomain(forName: suiteName)
+}
+
+private func utcCalendar() -> Calendar {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+    return calendar
+}
+
+private func makeDate(year: Int, month: Int, day: Int, calendar: Calendar) -> Date {
+    var components = DateComponents()
+    components.year = year
+    components.month = month
+    components.day = day
+    components.hour = 12
+    return calendar.date(from: components) ?? Date()
+}
+
 private final class TrustCheckerMock: KeyboardAccessTrustChecking {
     private let responses: [Bool]
     private var currentIndex: Int = 0

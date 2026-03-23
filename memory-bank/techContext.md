@@ -13,6 +13,7 @@
 - `kitkat/` app source
 - `kitkat/Model/` timer, monitor, quote models
 - `kitkat/Utils/` API client, logger, day-count store
+- `kitkat/Utils/` now also includes date-history storage + weekday-average calculator
 - `kitkatTests/` Swift Testing unit tests (mostly REST client)
 - `kitkatUITests/` XCTest UI tests template
 

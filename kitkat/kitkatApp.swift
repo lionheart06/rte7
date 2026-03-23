@@ -20,15 +20,18 @@ struct kitkatApp: App {
    @State var cancellable4: AnyObject? = nil
    @State private var isWindowVisible = false
    @State private var dayOfTheWeekCounts: [String: Int] = DayOfTheWeekCounterStore.load()
+   @State private var dailyHistoryCounts: [String: Int] = DailyCountHistoryStore.load()
    @State private var remainingSeconds: Int = PERIOD * 60
    @State private var idleCount: Int = 0
    @State private var keyboardAccessStatus: KeyboardAccessStatus = .disconnected
    @State var cancellable5: AnyObject? = nil
+   @State var cancellable6: AnyObject? = nil
     
     var body: some Scene {
         WindowGroup {
             ContentView(
                 dayOfWeekCounts: $dayOfTheWeekCounts,
+                dailyHistoryCounts: $dailyHistoryCounts,
                 menuText: $menuText,
                 idleCount: $idleCount,
                 keyboardAccessStatus: $keyboardAccessStatus
@@ -61,6 +64,9 @@ struct kitkatApp: App {
                     self.cancellable5 = appDelegate.$keyboardAccessStatus.sink { status in
                         self.keyboardAccessStatus = status
                     }
+                    self.cancellable6 = appDelegate.$dailyHistoryCounts.sink { history in
+                        self.dailyHistoryCounts = history
+                    }
                 }
                 .onDisappear {
                     self.cancellable = nil
@@ -68,6 +74,7 @@ struct kitkatApp: App {
                     self.cancellable3 = nil
                     self.cancellable4 = nil
                     self.cancellable5 = nil
+                    self.cancellable6 = nil
                 }
         }
         .windowStyle(.hiddenTitleBar)
@@ -84,6 +91,7 @@ struct kitkatApp: App {
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, GlobalEventMonitorDelegate {
     @Published var menuText:String = "30"
     @Published var dayOfTheWeekCounts: [String:Int] = ["Monday":0]
+    @Published var dailyHistoryCounts: [String:Int] = [:]
     @Published var remainingSeconds: Int = PERIOD * 60
     @Published var idleCount: Int = 0
     @Published var keyboardAccessStatus: KeyboardAccessStatus = .disconnected
@@ -97,6 +105,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, GlobalEven
         countDownTimer = CountDownTimer()
         globalEventMonitor = GlobalEventMonitor(counter:countDownTimer)
         dayOfTheWeekCounts = DayOfTheWeekCounterStore.load()
+        dailyHistoryCounts = DailyCountHistoryStore.load()
         super.init()
         globalEventMonitor.delegate = self
     }
@@ -166,6 +175,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, GlobalEven
     
     func setDayOfWeekCounts(dayOfWeekCounts:[String:Int]) {
         dayOfTheWeekCounts = dayOfWeekCounts
+    }
+
+    func setDailyHistoryCounts(dailyHistoryCounts:[String:Int]) {
+        self.dailyHistoryCounts = dailyHistoryCounts
     }
 
     func setRemainingSeconds(seconds: Int) {

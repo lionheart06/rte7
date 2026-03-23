@@ -63,7 +63,9 @@ class CountDownTimer {
                     }
                     NotificationCenter.default.post(name: Notification.Name("ShowMainWindow"), object: nil)
                     updateCountForCurrentDay()
+                    let updatedHistory = updateDailyHistoryForCurrentDay()
                     self.app?.setDayOfWeekCounts(dayOfWeekCounts:dayOfWeekCounts)
+                    self.app?.setDailyHistoryCounts(dailyHistoryCounts: updatedHistory)
                     self.publishCountdown()
                 }
             }
@@ -111,6 +113,9 @@ var dayOfWeekCounts: [String: Int] = {
 
 var g_dayOfWeek = ""
 
+// Initialize the dictionary with persisted date-level daily history.
+var dailyHistoryCounts: [String: Int] = DailyCountHistoryStore.load()
+
 // Function to update the count for the current day of the week.
 func updateCountForCurrentDay() {
     // Get the current date.
@@ -130,5 +135,19 @@ func updateCountForCurrentDay() {
     }
     
     print("Updated count for \(dayOfWeek): \(dayOfWeekCounts[dayOfWeek] ?? 0)")
+}
+
+@discardableResult
+func updateDailyHistoryForCurrentDay(
+    on date: Date = Date(),
+    calendar: Calendar = .current,
+    userDefaults: UserDefaults = .standard
+) -> [String: Int] {
+    dailyHistoryCounts = DailyCountHistoryStore.recordBreak(
+        on: date,
+        calendar: calendar,
+        userDefaults: userDefaults
+    )
+    return dailyHistoryCounts
 }
  
