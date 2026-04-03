@@ -23,56 +23,86 @@ struct ContentView: View {
     // @EnvironmentObject var windowController: WindowController
     var body: some View {
         VStack(spacing: 24) {
-            VStack(spacing: 8) {
-                Text("KitKat. Take a Break")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
+            HStack(alignment: .top, spacing: 16) {
+                GroupBox("Count & Idle") {
+                    VStack(spacing: 8) {
+                        Text("KitKat. Take a Break")
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
 
-                HStack(spacing: 8) {
-                    Image(systemName: keyboardAccessStatus.iconSystemName)
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(
-                            keyboardAccessStatus == .connected ? .green : Color.orange
+                        HStack(spacing: 8) {
+                            Image(systemName: keyboardAccessStatus.iconSystemName)
+                                .font(.body.weight(.semibold))
+                                .foregroundStyle(
+                                    keyboardAccessStatus == .connected ? .green : Color.orange
+                                )
+                            Text(keyboardAccessStatus.accessibilityText)
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(.secondary)
+                        }
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel(keyboardAccessStatus.accessibilityText)
+
+                        HStack(alignment: .center, spacing: 24) {
+                            Label {
+                                Text(formattedTime)
+                                    .font(.system(size: 56, weight: .semibold, design: .monospaced))
+                                    .foregroundStyle(.primary)
+                            } icon: {
+                                Image(systemName: "timer")
+                                    .font(.title)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            Divider()
+                                .frame(height: 44)
+
+                            Label {
+                                Text("Idle count: \(idleCount)")
+                                    .font(.system(size: 24, weight: .medium, design: .monospaced))
+                                    .foregroundStyle(.primary)
+                            } icon: {
+                                Image(systemName: "pause.circle")
+                                    .font(.title2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        Text("Next break arrives when the countdown hits zero.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .groupBoxStyle(.automatic)
+
+                GroupBox("Workweek Average Goal") {
+                    HStack(alignment: .center, spacing: 16) {
+                        CoffeeCupGoalView(
+                            progress: coffeeFillProgress,
+                            todayCount: todayCount,
+                            goalCount: averagePerWorkdayGoal,
+                            isUnlocked: hasReachedCoffeeGoal
                         )
-                    Text(keyboardAccessStatus.accessibilityText)
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(.secondary)
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel(keyboardAccessStatus.accessibilityText)
 
-                HStack(alignment: .center, spacing: 24) {
-                    Label {
-                        Text(formattedTime)
-                            .font(.system(size: 56, weight: .semibold, design: .monospaced))
-                            .foregroundStyle(.primary)
-                    } icon: {
-                        Image(systemName: "timer")
-                            .font(.title)
-                            .foregroundStyle(.secondary)
-                    }
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Average per day to reach")
+                                .foregroundStyle(.secondary)
+                            Text(hasReachedCoffeeGoal ? "Goal reached for today. Coffee unlocked." : "Fill the cup by meeting your daily goal.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
 
-                    Divider()
-                        .frame(height: 44)
-
-                    Label {
-                        Text("Idle count: \(idleCount)")
-                            .font(.system(size: 24, weight: .medium, design: .monospaced))
-                            .foregroundStyle(.primary)
-                    } icon: {
-                        Image(systemName: "pause.circle")
-                            .font(.title2)
-                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Text("\(averagePerWorkdayGoal)")
+                            .font(.system(size: 28, weight: .semibold, design: .monospaced))
+                            .monospacedDigit()
+                            .padding(.trailing, 50)
                     }
                 }
-                Text("Next break arrives when the countdown hits zero.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity)
+                .groupBoxStyle(.automatic)
             }
             .frame(maxWidth: .infinity)
-            .padding()
-            .background(.thinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
             HStack(alignment: .top, spacing: 16) {
                 GroupBox("Daily Streak") {
@@ -122,33 +152,37 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .groupBoxStyle(.automatic)
-            }
-            .frame(maxWidth: .infinity)
 
-            GroupBox("Workweek Average Goal") {
-                HStack(alignment: .center, spacing: 16) {
-                    CoffeeCupGoalView(
-                        progress: coffeeFillProgress,
-                        todayCount: todayCount,
-                        goalCount: averagePerWorkdayGoal,
-                        isUnlocked: hasReachedCoffeeGoal
-                    )
+                GroupBox("Weekday Most Productive (Last 13 Weeks)") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Chart(weekdayProductiveItems) { item in
+                            BarMark(
+                                x: .value("Weekday", item.day),
+                                y: .value("Peak", item.peak),
+                                width: .fixed(14)
+                            )
+                            .foregroundStyle(productiveColor(for: item.day))
+                            .annotation(position: .top, spacing: 4) {
+                                Text("\(item.peak)")
+                                    .font(.caption2.monospacedDigit())
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .chartYScale(domain: 0...productiveChartUpperBound)
+                        .chartYAxis {
+                            AxisMarks(position: .leading)
+                        }
+                        .frame(height: 220)
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Average per day to reach")
-                            .foregroundStyle(.secondary)
-                        Text(hasReachedCoffeeGoal ? "Goal reached for today. Coffee unlocked." : "Fill the cup by meeting your daily goal.")
+                        Text("Peak single-day breaks per weekday in rolling 13 weeks (Monday-Friday).")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-
-                    Spacer()
-                    Text("\(averagePerWorkdayGoal)")
-                        .font(.system(size: 28, weight: .semibold, design: .monospaced))
-                        .monospacedDigit()
                 }
+                .frame(maxWidth: .infinity)
+                .groupBoxStyle(.automatic)
             }
-            .groupBoxStyle(.automatic)
+            .frame(maxWidth: .infinity)
         }
         .padding(32)
     }
@@ -174,6 +208,22 @@ struct ContentView: View {
 
     private var averageChartUpperBound: Int {
         max(1, (weekdayAverageItems.map(\.average).max() ?? 0) + 1)
+    }
+
+    private var weekdayProductiveSummary: WeekdayProductiveSummary {
+        WeekdayAverageCalculator.productiveSummary(from: dailyHistoryCounts)
+    }
+
+    private var weekdayProductiveItems: [WeekdayProductiveRow] {
+        weekdayProductiveSummary.rows
+    }
+
+    private var productiveChartUpperBound: Int {
+        max(1, (weekdayProductiveItems.map(\.peak).max() ?? 0) + 1)
+    }
+
+    private var productiveWinners: Set<String> {
+        weekdayProductiveSummary.winners
     }
 
     private var dailyStreakTableHeight: CGFloat {
@@ -212,6 +262,12 @@ struct ContentView: View {
 
     private func isCurrentDay(_ day: String) -> Bool {
         day == currentDay
+    }
+
+    private func productiveColor(for day: String) -> Color {
+        productiveWinners.contains(day)
+            ? Color(red: 0.0, green: 0.35, blue: 0.12)
+            : Color.secondary.opacity(0.5)
     }
 }
 

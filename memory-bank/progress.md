@@ -11,15 +11,25 @@
 - Date-level history now persists by local date key (`yyyy-MM-dd`) with rolling 13-week retention.
 - Weekday averages UI now shows a Mon-Fri bar chart (last 13 weeks), without an averages table.
 - Weekday average values are integer-only and always rounded up.
-- Daily streak table and weekday bar chart are displayed side-by-side.
+- Weekday most-productive UI now shows a Mon-Fri bar chart (last 13 weeks) using rolling per-weekday max.
+- Dashboard now uses a two-row layout:
+  - row 1: Count & Idle + Workweek Average Goal
+  - row 2: Daily Streak + Weekday Averages + Weekday Most Productive
 - Daily streak table has fixed height to keep all rows visible.
 - Current day row now highlighted (dark green + bold).
 - Workweek average goal metric is displayed.
 - Daily target now has an enforced minimum of `5`, and increases only when computed average exceeds `5`.
 - Coffee-cup progress indicator displays today's progress toward the average goal and unlocks at completion.
 - Keyboard listener status now appears in the main window with connected/disconnected icon states.
+- Break popup now uses adaptive system-material styling that stays readable in both dark and light themes.
 
 ## Recently Completed
+- Redesigned the break popup window to be dark/light friendly while keeping the large overlay:
+  - removed fixed light-only window background tint,
+  - added adaptive material backdrop + centered panel,
+  - updated popup typography and action-row structure,
+  - switched to semantic button styles (`Close` bordered, `Get Quote` bordered-prominent),
+  - removed obsolete popup styling/commented code.
 - Added `WorkweekGoalCalculator` as a shared goal-computation helper.
 - Updated goal formula to `max(5, ceil(totalAcrossAllDays / 5.0))`.
 - Updated coffee goal text/accessibility to remove "goal not set yet" semantics.
@@ -39,10 +49,13 @@
 - Added unit tests for keyboard status mapping and refresh behavior in monitor + app delegate flow.
 - Added `DailyCountHistoryStore` with record + prune behavior for 13-week rolling history.
 - Added `WeekdayAverageCalculator` for Mon-Fri averages from date history.
+- Added weekday productive-peak analytics with tie winner metadata from date history.
 - Wired `dailyHistoryCounts` state through `CountDownTimer` -> `AppDelegate` -> `kitkatApp` -> `ContentView`.
+- Reflowed `ContentView` to place Count/Idle beside Workweek Average Goal on row 1 and keep Daily Streak + both weekday charts on row 2.
 - Added test coverage for:
   - history bootstrap/load/save/prune,
   - weekday average bucketing/skip-missing-day/weekend exclusion/boundary filtering,
+  - weekday productive peak replacement/falloff/weekend exclusion/tie winners,
   - break-path history increment + prune integration.
 
 ## Known Issues / Risks
@@ -55,4 +68,3 @@
 - Add unit tests for weekday rollover and average rounding rules.
 - Consider moving day-count state into a dedicated model/service to reduce global mutable state.
 - Consider merging legacy weekday counter and date-history logic into one service to remove duplicate mutable global state.
-- Decide and document explicit product rule for exactly `.5` rounding behavior.

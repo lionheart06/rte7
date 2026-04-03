@@ -135,7 +135,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, GlobalEven
             self.window?.setFrame(newFrame, display:true)
             self.window?.titlebarAppearsTransparent = true
             self.window?.titleVisibility = .hidden
-            self.window?.backgroundColor = NSColor(white: 1.0, alpha: 0.8)
             
             self.window?.title = "Take a break, have a kitkat"
             self.window?.center()

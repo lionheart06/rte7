@@ -252,6 +252,105 @@ struct WeekdayAverageCalculatorTests {
     }
 }
 
+struct WeekdayProductiveCalculatorTests {
+    @Test func productiveSummary_returnsPeakPerWeekdayFromMultipleEntries() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2026-03-23": 9,
+            "2026-03-16": 7,
+            "2026-03-24": 5,
+            "2026-03-17": 6
+        ]
+
+        let summary = WeekdayAverageCalculator.productiveSummary(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+        let peaks = Dictionary(uniqueKeysWithValues: summary.rows.map { ($0.day, $0.peak) })
+
+        #expect(peaks["Monday"] == 9)
+        #expect(peaks["Tuesday"] == 6)
+        #expect(peaks["Wednesday"] == 0)
+    }
+
+    @Test func productiveSummary_replacesPeakWhenNewerHigherValueAppears() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2026-02-23": 9,
+            "2026-03-23": 10
+        ]
+
+        let summary = WeekdayAverageCalculator.productiveSummary(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+        let peaks = Dictionary(uniqueKeysWithValues: summary.rows.map { ($0.day, $0.peak) })
+
+        #expect(peaks["Monday"] == 10)
+    }
+
+    @Test func productiveSummary_dropsOldPeakWhenItFallsOutsideWindow() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2025-12-22": 12,
+            "2026-01-05": 7
+        ]
+
+        let summary = WeekdayAverageCalculator.productiveSummary(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+        let peaks = Dictionary(uniqueKeysWithValues: summary.rows.map { ($0.day, $0.peak) })
+
+        #expect(peaks["Monday"] == 7)
+    }
+
+    @Test func productiveSummary_excludesWeekendsFromRowsAndPeaks() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2026-03-21": 50,
+            "2026-03-22": 60,
+            "2026-03-23": 2
+        ]
+
+        let summary = WeekdayAverageCalculator.productiveSummary(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+        let peaks = Dictionary(uniqueKeysWithValues: summary.rows.map { ($0.day, $0.peak) })
+
+        #expect(summary.rows.count == 5)
+        #expect(peaks["Monday"] == 2)
+        #expect(peaks["Friday"] == 0)
+    }
+
+    @Test func productiveSummary_returnsAllTiedWinners() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 27, calendar: calendar)
+        let history = [
+            "2026-03-23": 8,
+            "2026-03-24": 8,
+            "2026-03-25": 4
+        ]
+
+        let summary = WeekdayAverageCalculator.productiveSummary(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+
+        #expect(summary.winners == Set(["Monday", "Tuesday"]))
+    }
+}
+
 struct DailyHistoryBreakUpdateIntegrationTests {
     @Test func updateDailyHistoryForCurrentDay_incrementsTodayAndPrunesOldEntries() throws {
         let isolatedDefaults = try makeIsolatedUserDefaults(suffix: "integration")

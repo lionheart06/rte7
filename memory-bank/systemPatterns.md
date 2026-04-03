@@ -9,8 +9,8 @@
 - Persistence: `DayOfTheWeekCounterStore` reads/writes weekday counts from `UserDefaults`.
 - History persistence: `DailyCountHistoryStore` reads/writes date-level daily counts (`yyyy-MM-dd`) and prunes to rolling 13 weeks.
 - Goal calculation: `WorkweekGoalCalculator` computes the displayed daily target.
-- Weekday analytics: `WeekdayAverageCalculator` computes Mon-Fri averages from the rolling history.
-- UI: `ContentView` renders timer, idle count, daily streak table, weekday-average bar chart, and average/goal metric.
+- Weekday analytics: `WeekdayAverageCalculator` computes Mon-Fri averages and Mon-Fri productive peaks from the rolling history.
+- UI: `ContentView` renders timer, idle count, daily streak table, weekday-average chart, weekday-productive chart, and workweek goal card.
 
 ## Core Runtime Flow
 1. `AppDelegate` creates `CountDownTimer` + `GlobalEventMonitor`.
@@ -41,7 +41,7 @@
 - Store writes full dictionary each update.
 - Daily goal target derives from counts via `WorkweekGoalCalculator.dailyTarget(from:)` using `max(5, ceil(totalAcrossAllDays / 5.0))`.
 
-## Data Pattern: Date-Level History + Weekday Averages
+## Data Pattern: Date-Level History + Weekday Analytics
 - Global in-memory dictionary `dailyHistoryCounts` mirrors persisted date-keyed history.
 - `updateDailyHistoryForCurrentDay()` increments current local day key and persists pruned history.
 - Pruning boundary:
@@ -51,3 +51,7 @@
   - buckets Mon-Fri totals by weekday
   - only counts dates with `count > 0` as denominator occurrences
   - returns ordered rows for Monday-Friday only.
+- `WeekdayAverageCalculator.productiveSummary` parses retained history entries in-window:
+  - computes weekday peaks with `peak(day) = max(dayCount)`
+  - returns Monday-Friday rows only
+  - returns tie-safe winner set where `peak(day)` equals the global max peak.

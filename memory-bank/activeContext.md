@@ -4,7 +4,34 @@
 - Stabilize and clarify the day-of-week counting semantics.
 - Improve weekly table readability and progress cues.
 - Surface keyboard-listener permission status in the main window.
-- Add rolling date-level history and weekday average analytics (Mon-Fri).
+- Maintain rolling date-level history analytics for weekday averages and weekday peaks (Mon-Fri).
+
+## Recent Changes (April 1, 2026)
+- Redesigned break popup visuals for dark/light theme compatibility while preserving large overlay behavior:
+  - Removed hard-coded light background tint from `NSWindow` setup.
+  - Added full-screen adaptive backdrop using system material + tone overlay.
+  - Added centered glass-style content panel with semantic text colors and subtle adaptive stroke/shadow.
+  - Reworked popup structure to include clear header, quote content, and action row.
+  - Updated action buttons to theme-safe styles (`Close` bordered, `Get Quote` bordered-prominent).
+- Removed dead/commented popup code (`VisualEffectView`, unused dismiss path) to reduce styling drift.
+
+## Recent Changes (March 24, 2026)
+- Added rolling weekday peak analytics in `WeekdayAverageCalculator`:
+  - New `WeekdayProductiveSummary` and `WeekdayProductiveRow` model outputs.
+  - `peak(day) = max(single-day count)` across the 13-week window for each weekday Monday-Friday.
+  - Winner metadata now supports ties: every weekday matching the global max peak is flagged as a winner.
+- Reflowed dashboard layout in `ContentView`:
+  - Row 1 now shows `Count & Idle` and `Workweek Average Goal`.
+  - Row 2 now shows `Daily Streak`, `Weekday Averages (Last 13 Weeks)`, and `Weekday Most Productive (Last 13 Weeks)`.
+- Added new "Weekday Most Productive" bar chart:
+  - Mon-Fri only.
+  - Tie-safe winner highlighting for top peak days.
+- Added unit tests for peak analytics:
+  - peak bucketing from multiple entries,
+  - replacement by newer higher value,
+  - old-max falloff after rolling-window pruning,
+  - weekend exclusion,
+  - tie winners.
 
 ## Recent Changes (March 19, 2026)
 - Added keyboard access status model and monitor abstractions:
@@ -88,6 +115,10 @@
 - Weekday average UI shows weekdays only (Mon-Fri) as a bar chart (no weekday-average table).
 - Weekday average values are now integer-only and always rounded up; no float average type is used.
 - Weekday averages now divide only by weekdays that have `count > 0` data in the 13-week window.
+- Weekday most-productive values use per-weekday rolling max over the same 13-week window.
+- Dashboard layout is fixed to two rows:
+  - row 1: `Count & Idle` + `Workweek Average Goal`
+  - row 2: `Daily Streak` + `Weekday Averages` + `Weekday Most Productive`
 
 ## Open Considerations
 - If product expectation changes, revisit whether `.5` should round down instead.

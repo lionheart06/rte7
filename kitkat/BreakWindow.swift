@@ -17,68 +17,86 @@ import Foundation
 import SwiftUI
 
 struct BreakWindow: View {
-    // @Binding var isPresented: Bool
     var window: NSWindow?
-    
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
         ZStack {
-            //VisualEffectView()
-            Color(.sRGB, red:0.0,green:0.5,blue:0.0,opacity:0.1 )
-            .edgesIgnoringSafeArea(.all)
-            VStack {
-                BreakView().frame(width:600,height:200)
-                Button("Close") {
-                    window?.close()
-                }
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    Color.black.opacity(colorScheme == .dark ? 0.28 : 0.12)
+                )
+                .ignoresSafeArea()
+
+            BreakView {
+                window?.close()
             }
-        }.frame(maxWidth:.infinity, maxHeight:.infinity)
-        
+            .padding(32)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
 }
 
 struct BreakView: View {
     @StateObject private var viewModel = QuoteViewModel()
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     @State private var didAppear = false
+    let onClose: () -> Void
 
     var body: some View {
-        VStack {
-          
-                        Text(viewModel.message)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .multilineTextAlignment(.center)
-                        
-                        Button("Get Quote") {
-                            viewModel.getQuote()
-                        }
-            /*Button("Close") {
-dismiss()
-            }*/
-                    }
-                    .frame(width: 600, height: 200)
-                    .onAppear {
-                        if !didAppear {
-                            didAppear = true
-                            viewModel.getQuote()
-                        }
-                    }
-    }
-    
-}
+        VStack(alignment: .leading, spacing: 20) {
+            header
 
-// not needed for now
-struct VisualEffectView:NSViewRepresentable {
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        // view.blendingMode = .behindWindow
-        view.state = .active
-        view.material = .fullScreenUI
-        return view
+            Text(viewModel.message)
+                .font(.title3)
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 4)
+
+            HStack(spacing: 12) {
+                Button("Close", action: onClose)
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+
+                Spacer()
+
+                Button("Get Quote") {
+                    viewModel.getQuote()
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+            }
+        }
+        .padding(28)
+        .frame(maxWidth: 720)
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(.regularMaterial)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(.primary.opacity(colorScheme == .dark ? 0.16 : 0.08), lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(colorScheme == .dark ? 0.35 : 0.16), radius: 24, x: 0, y: 10)
+        .onAppear {
+            if !didAppear {
+                didAppear = true
+                viewModel.getQuote()
+            }
+        }
     }
-    
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Break time")
+                .font(.system(size: 34, weight: .semibold, design: .rounded))
+                .foregroundStyle(.primary)
+
+            Text("Take a minute away from the keyboard.")
+                .font(.title3)
+                .foregroundStyle(.secondary)
+        }
     }
 }
-
