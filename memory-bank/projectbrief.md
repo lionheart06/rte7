@@ -16,7 +16,7 @@
 - Keyboard event monitoring (local + global monitors).
 - Break modal window with quote-of-the-day fetch.
 - Day-of-week count persistence and visualization.
-- Workweek average metric (`total weekly count / 5`) displayed in UI.
+- Workweek average goal metric derived from all-day averages (Mon-Sun, 13-week history) with a fixed divisor of `5` displayed in UI.
 
 ## Constraints
 - Keep implementation lightweight and native (Swift/SwiftUI/AppKit interop).

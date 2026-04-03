@@ -25,26 +25,62 @@ struct WeekdayAverageCalculator {
         (5, "Thursday"),
         (6, "Friday"),
     ]
+    private static let orderedWeekdaysIncludingWeekend: [(number: Int, name: String)] = [
+        (2, "Monday"),
+        (3, "Tuesday"),
+        (4, "Wednesday"),
+        (5, "Thursday"),
+        (6, "Friday"),
+        (7, "Saturday"),
+        (1, "Sunday"),
+    ]
 
     static func weekdayAverages(
         from history: [String: Int],
         referenceDate: Date = Date(),
         calendar: Calendar = .current
     ) -> [String: Int] {
+        averages(
+            from: history,
+            orderedDays: orderedWeekdays,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+    }
+
+    static func allDayAverages(
+        from history: [String: Int],
+        referenceDate: Date = Date(),
+        calendar: Calendar = .current
+    ) -> [String: Int] {
+        averages(
+            from: history,
+            orderedDays: orderedWeekdaysIncludingWeekend,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+    }
+
+    private static func averages(
+        from history: [String: Int],
+        orderedDays: [(number: Int, name: String)],
+        referenceDate: Date,
+        calendar: Calendar
+    ) -> [String: Int] {
         let startDate = DailyCountHistoryStore.windowStartDate(referenceDate: referenceDate, calendar: calendar)
         let endDate = calendar.startOfDay(for: referenceDate)
 
-        var totals = orderedWeekdays.reduce(into: [String: Int]()) { result, item in
+        var totals = orderedDays.reduce(into: [String: Int]()) { result, item in
             result[item.name] = 0
         }
-        var occurrences = orderedWeekdays.reduce(into: [String: Int]()) { result, item in
+        var occurrences = orderedDays.reduce(into: [String: Int]()) { result, item in
             result[item.name] = 0
         }
 
         var cursor = startDate
         while cursor <= endDate {
             let weekdayNumber = calendar.component(.weekday, from: cursor)
-            if let weekdayName = orderedWeekdays.first(where: { $0.number == weekdayNumber })?.name {
+            if let weekdayName = orderedDays.first(where: { $0.number == weekdayNumber })?.name {
                 let key = DailyCountHistoryStore.dateKey(for: cursor, calendar: calendar)
                 let dayCount = history[key, default: 0]
                 if dayCount > 0 {
@@ -59,7 +95,7 @@ struct WeekdayAverageCalculator {
             cursor = nextDate
         }
 
-        return orderedWeekdays.reduce(into: [String: Int]()) { result, item in
+        return orderedDays.reduce(into: [String: Int]()) { result, item in
             let total = totals[item.name, default: 0]
             let count = occurrences[item.name, default: 0]
             result[item.name] = roundedUpAverage(total: total, count: count)

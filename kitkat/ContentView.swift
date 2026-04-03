@@ -231,7 +231,10 @@ struct ContentView: View {
     }
 
     private var averagePerWorkdayGoal: Int {
-        WorkweekGoalCalculator.dailyTarget(from: dayOfWeekCounts)
+        let allDayAverages = WeekdayAverageCalculator.allDayAverages(
+            from: dailyHistoryCounts
+        )
+        return WorkweekGoalCalculator.dailyTarget(from: allDayAverages)
     }
 
     private var todayCount: Int {

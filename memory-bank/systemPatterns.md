@@ -39,7 +39,6 @@
 - Global in-memory dictionary `dayOfWeekCounts` initialized from store defaults + persisted values.
 - `updateCountForCurrentDay()` does day rollover reset for current day then increments.
 - Store writes full dictionary each update.
-- Daily goal target derives from counts via `WorkweekGoalCalculator.dailyTarget(from:)` using `max(5, ceil(totalAcrossAllDays / 5.0))`.
 
 ## Data Pattern: Date-Level History + Weekday Analytics
 - Global in-memory dictionary `dailyHistoryCounts` mirrors persisted date-keyed history.
@@ -55,3 +54,7 @@
   - computes weekday peaks with `peak(day) = max(dayCount)`
   - returns Monday-Friday rows only
   - returns tie-safe winner set where `peak(day)` equals the global max peak.
+- Workweek daily goal now derives from weekday averages:
+  - `ContentView` reads `WeekdayAverageCalculator.allDayAverages(from:)` to include weekend averages from the same rolling history dataset.
+  - `WorkweekGoalCalculator.dailyTarget(from:)` sums Mon-Sun average values.
+  - Formula: `goal = max(5, ceil(sum(allDailyAverages) / 5.0))`.

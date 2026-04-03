@@ -18,7 +18,7 @@
 - Daily streak table has fixed height to keep all rows visible.
 - Current day row now highlighted (dark green + bold).
 - Workweek average goal metric is displayed.
-- Daily target now has an enforced minimum of `5`, and increases only when computed average exceeds `5`.
+- Daily target now has an enforced minimum of `5`, includes weekend averages in total, and divides by fixed weekday divisor `5`.
 - Coffee-cup progress indicator displays today's progress toward the average goal and unlocks at completion.
 - Keyboard listener status now appears in the main window with connected/disconnected icon states.
 - Break popup now uses adaptive system-material styling that stays readable in both dark and light themes.
@@ -31,9 +31,9 @@
   - switched to semantic button styles (`Close` bordered, `Get Quote` bordered-prominent),
   - removed obsolete popup styling/commented code.
 - Added `WorkweekGoalCalculator` as a shared goal-computation helper.
-- Updated goal formula to `max(5, ceil(totalAcrossAllDays / 5.0))`.
+- Updated goal formula to use all-day averages with fixed weekday divisor: `max(5, ceil(sum(allDailyAverages) / 5.0))`.
 - Updated coffee goal text/accessibility to remove "goal not set yet" semantics.
-- Added unit tests for goal floor, rounding-up behavior, and legacy averaging basis coverage.
+- Updated unit tests for goal floor, weekend-included totals, and fixed-divisor (`5`) averaging behavior.
 - Fixed daily rollover behavior to reset current day on first update of a new day.
 - Added average-per-workday calculation and UI display.
 - Added coffee-cup UI with animated fill tied to today's count vs average goal, with unlocked state messaging.

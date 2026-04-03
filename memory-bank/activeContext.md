@@ -6,6 +6,19 @@
 - Surface keyboard-listener permission status in the main window.
 - Maintain rolling date-level history analytics for weekday averages and weekday peaks (Mon-Fri).
 
+## Recent Changes (April 3, 2026)
+- Updated workweek goal calculation to use all-day average analytics (Mon-Sun, rolling 13 weeks) instead of legacy `dayOfWeekCounts` totals.
+- New goal rule in `WorkweekGoalCalculator.dailyTarget(from:)`:
+  - gather Mon-Sun daily averages,
+  - `base = ceil(sum(allDailyAverages) / 5.0)`,
+  - final goal remains `max(5, base)`.
+- Added `WeekdayAverageCalculator.allDayAverages(from:)` so weekend averages are available for goal computation while keeping Mon-Fri chart behavior unchanged.
+- Updated `ContentView.averagePerWorkdayGoal` to derive goal input from `allDayAverages`.
+- Replaced goal-calculator unit tests to match the new formula:
+  - empty/all-zero averages -> floor `5`,
+  - weekend values are included in the total,
+  - averaging always divides by fixed weekday divisor `5` even when seven days are present.
+
 ## Recent Changes (April 1, 2026)
 - Redesigned break popup visuals for dark/light theme compatibility while preserving large overlay behavior:
   - Removed hard-coded light background tint from `NSWindow` setup.
@@ -109,7 +122,7 @@
 
 ## Active Decisions
 - Current day is emphasized in the weekly table for fast scanning.
-- Daily target uses `max(5, ceil(totalAcrossAllDays / 5.0))`.
+- Daily target uses all-day averages (Mon-Sun, last 13 weeks): `max(5, ceil(sum(allDailyAverages) / 5.0))`.
 - Counts are persisted via `DayOfTheWeekCounterStore` in `UserDefaults`.
 - Date-level history uses `DailyCountHistoryStore` and keeps a rolling 13-week window.
 - Weekday average UI shows weekdays only (Mon-Fri) as a bar chart (no weekday-average table).
@@ -121,6 +134,6 @@
   - row 2: `Daily Streak` + `Weekday Averages` + `Weekday Most Productive`
 
 ## Open Considerations
-- If product expectation changes, revisit whether `.5` should round down instead.
+- If product expectation changes, revisit whether weekend values should continue contributing to goal total while divisor stays fixed at weekday count (`5`).
 - Day reset only occurs when `updateCountForCurrentDay()` runs (i.e., at break completion), not at midnight.
 - Legacy `dayOfWeekCounts` global and date-level `dailyHistoryCounts` global are both still present in `CountDownTimer.swift`; consider moving into a dedicated service/model.

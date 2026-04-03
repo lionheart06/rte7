@@ -78,39 +78,52 @@ struct RESTAPIClientTests {
 }
 
 struct WorkweekGoalCalculatorTests {
-    @Test func dailyTarget_returnsFiveWhenTotalIsZero() {
+    @Test func dailyTarget_returnsFiveWhenAveragesAreEmpty() {
         let goal = WorkweekGoalCalculator.dailyTarget(from: [:])
         #expect(goal == 5)
     }
 
-    @Test func dailyTarget_returnsFiveWhenAverageIsFour() {
-        let dayCounts = ["Monday": 20]
-        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
+    @Test func dailyTarget_returnsFiveWhenAllDailyAveragesAreZero() {
+        let dailyAverages = [
+            "Monday": 0,
+            "Tuesday": 0,
+            "Wednesday": 0,
+            "Thursday": 0,
+            "Friday": 0,
+            "Saturday": 0,
+            "Sunday": 0
+        ]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dailyAverages)
         #expect(goal == 5)
     }
 
-    @Test func dailyTarget_returnsFiveWhenAverageIsExactlyFive() {
-        let dayCounts = ["Monday": 25]
-        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
+    @Test func dailyTarget_appliesMinimumFloorWhenTotalDividedByFiveIsUnderFive() {
+        let dailyAverages = ["Monday": 20]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dailyAverages)
         #expect(goal == 5)
     }
 
-    @Test func dailyTarget_roundsUpWhenAverageIsFivePointTwo() {
-        let dayCounts = ["Monday": 26]
-        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
-        #expect(goal == 6)
+    @Test func dailyTarget_includesWeekendInTotalButDividesByFive() {
+        let dailyAverages = [
+            "Saturday": 10,
+            "Sunday": 5
+        ]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dailyAverages)
+        #expect(goal == 5)
     }
 
-    @Test func dailyTarget_roundsUpWhenAverageIsFivePointEight() {
-        let dayCounts = ["Monday": 29]
-        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
-        #expect(goal == 6)
-    }
-
-    @Test func dailyTarget_usesAllDaysTotalWithDivisorFive() {
-        let dayCounts = ["Saturday": 30]
-        let goal = WorkweekGoalCalculator.dailyTarget(from: dayCounts)
-        #expect(goal == 6)
+    @Test func dailyTarget_usesFixedWeekdayDivisorEvenWithAllSevenDaysPresent() {
+        let dailyAverages = [
+            "Monday": 10,
+            "Tuesday": 10,
+            "Wednesday": 10,
+            "Thursday": 10,
+            "Friday": 10,
+            "Saturday": 10,
+            "Sunday": 10
+        ]
+        let goal = WorkweekGoalCalculator.dailyTarget(from: dailyAverages)
+        #expect(goal == 14)
     }
 }
 
@@ -249,6 +262,25 @@ struct WeekdayAverageCalculatorTests {
         )
 
         #expect(averages["Monday"] == 13)
+    }
+
+    @Test func allDayAverages_includesWeekendRows() {
+        let calendar = utcCalendar()
+        let referenceDate = makeDate(year: 2026, month: 3, day: 29, calendar: calendar)
+        let history = [
+            "2026-03-28": 8,
+            "2026-03-29": 6
+        ]
+
+        let averages = WeekdayAverageCalculator.allDayAverages(
+            from: history,
+            referenceDate: referenceDate,
+            calendar: calendar
+        )
+
+        #expect(averages["Saturday"] == 8)
+        #expect(averages["Sunday"] == 6)
+        #expect(averages.keys.count == 7)
     }
 }
 
