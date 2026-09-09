@@ -18,6 +18,7 @@ import SwiftUI
 
 struct BreakWindow: View {
     var window: NSWindow?
+    var breakIndex: Int = 0
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -29,7 +30,7 @@ struct BreakWindow: View {
                 )
                 .ignoresSafeArea()
 
-            BreakView {
+            BreakView(breakIndex: breakIndex) {
                 window?.close()
             }
             .padding(32)
@@ -42,11 +43,14 @@ struct BreakView: View {
     @StateObject private var viewModel = QuoteViewModel()
     @Environment(\.colorScheme) private var colorScheme
     @State private var didAppear = false
+    var breakIndex: Int = 0
     let onClose: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             header
+
+            StretchSuggestionsView(suggestions: suggestions)
 
             Text(viewModel.message)
                 .font(.title3)
@@ -99,4 +103,52 @@ struct BreakView: View {
                 .foregroundStyle(.secondary)
         }
     }
+
+    private var suggestions: [StretchSuggestion] {
+        StretchSuggestion.rotation(breakIndex: breakIndex)
+    }
+}
+
+struct StretchSuggestionsView: View {
+    let suggestions: [StretchSuggestion]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("While you are up")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+
+            ForEach(suggestions) { suggestion in
+                HStack(alignment: .top, spacing: 12) {
+                    Image(systemName: suggestion.systemImage)
+                        .font(.title3)
+                        .foregroundStyle(.tint)
+                        .frame(width: 28, alignment: .center)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(suggestion.title)
+                            .font(.body.weight(.medium))
+                            .foregroundStyle(.primary)
+
+                        Text(suggestion.detail)
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(suggestion.title). \(suggestion.detail)")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(.quaternary.opacity(0.35))
+        )
+    }
+}
+
+#Preview("Break window") {
+    BreakWindow(breakIndex: 0)
+        .frame(width: 760, height: 640)
 }

@@ -6,6 +6,14 @@
 - Surface keyboard-listener permission status in the main window.
 - Maintain rolling date-level history analytics for weekday averages and weekday peaks (Mon-Fri).
 
+## Recent Changes (August 20, 2026)
+- Removed the retired `Break Overview` HTML/WebKit panel, its bundled page, source configuration, file polling, paste editor, and related framework imports.
+- Restored the native dashboard's two-row layout.
+
+## Recent Changes (July 20, 2026)
+- Corrected keyboard activity monitoring to use macOS Input Monitoring permission (`CGPreflightListenEventAccess` / `CGRequestListenEventAccess`) rather than unrelated Accessibility trust; global events now marshal timer updates onto the main thread and clear idle state immediately.
+- Verification note: on July 20, 2026, both `xcodebuild test` and `xcodebuild build` could not compile because the environment's CoreSimulator service was unavailable and `SwiftDataMacros` returned a malformed response.
+
 ## Recent Changes (April 3, 2026)
 - Updated workweek goal calculation to use all-day average analytics (Mon-Sun, rolling 13 weeks) instead of legacy `dayOfWeekCounts` totals.
 - New goal rule in `WorkweekGoalCalculator.dailyTarget(from:)`:

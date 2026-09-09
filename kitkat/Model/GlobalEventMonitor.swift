@@ -14,7 +14,7 @@
 //
 
 import Cocoa
-import ApplicationServices
+import CoreGraphics
 
 enum KeyboardAccessStatus: Equatable {
     case connected
@@ -32,9 +32,9 @@ enum KeyboardAccessStatus: Equatable {
     var accessibilityText: String {
         switch self {
         case .connected:
-            return "Keyboard access: On"
+            return "Input Monitoring: On"
         case .disconnected:
-            return "Keyboard access: Off"
+            return "Input Monitoring: Off"
         }
     }
 }
@@ -50,14 +50,12 @@ protocol KeyboardAccessTrustChecking {
     func isKeyboardAccessTrusted(promptIfNeeded: Bool) -> Bool
 }
 
-struct AXKeyboardAccessTrustChecker: KeyboardAccessTrustChecking {
+struct InputMonitoringTrustChecker: KeyboardAccessTrustChecking {
     func isKeyboardAccessTrusted(promptIfNeeded: Bool) -> Bool {
         if promptIfNeeded {
-            let promptKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
-            let options: CFDictionary = [promptKey: true] as CFDictionary
-            return AXIsProcessTrustedWithOptions(options)
+            return CGRequestListenEventAccess()
         }
-        return AXIsProcessTrusted()
+        return CGPreflightListenEventAccess()
     }
 }
 
@@ -75,7 +73,7 @@ final class GlobalEventMonitor: KeyboardAccessMonitoring {
     private let trustChecker: KeyboardAccessTrustChecking
     weak var delegate: GlobalEventMonitorDelegate?
 
-    init(counter: CountDownTimer, trustChecker: KeyboardAccessTrustChecking = AXKeyboardAccessTrustChecker()) {
+    init(counter: CountDownTimer, trustChecker: KeyboardAccessTrustChecking = InputMonitoringTrustChecker()) {
         self.counter = counter
         self.trustChecker = trustChecker
     }
@@ -83,7 +81,7 @@ final class GlobalEventMonitor: KeyboardAccessMonitoring {
     func start() {
         counter.continueCounter()
         localMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-            self.counter.continueCounter()
+            self.recordKeyboardActivity()
             return event
         }
         globalMonitor = NSEvent.addGlobalMonitorForEvents(
@@ -117,8 +115,14 @@ final class GlobalEventMonitor: KeyboardAccessMonitoring {
     }
 
     private func handleKeyboardEvent(_ event: NSEvent) {
-        counter.continueCounter()
+        recordKeyboardActivity()
         Logger.shared.log("Keyboard is Clicked")
+    }
+
+    private func recordKeyboardActivity() {
+        DispatchQueue.main.async { [weak self] in
+            self?.counter.continueCounter()
+        }
     }
 }
  

@@ -471,12 +471,25 @@ private final class GlobalEventMonitorDelegateSpy: GlobalEventMonitorDelegate {
 struct KeyboardAccessStatusTests {
     @Test func connectedStatus_usesGreenKeyboardIconAndOnLabel() {
         #expect(KeyboardAccessStatus.connected.iconSystemName == "keyboard.fill")
-        #expect(KeyboardAccessStatus.connected.accessibilityText == "Keyboard access: On")
+        #expect(KeyboardAccessStatus.connected.accessibilityText == "Input Monitoring: On")
     }
 
     @Test func disconnectedStatus_usesDisconnectedIconAndOffLabel() {
         #expect(KeyboardAccessStatus.disconnected.iconSystemName == "keyboard.badge.exclamationmark")
-        #expect(KeyboardAccessStatus.disconnected.accessibilityText == "Keyboard access: Off")
+        #expect(KeyboardAccessStatus.disconnected.accessibilityText == "Input Monitoring: Off")
+    }
+}
+
+struct CountDownTimerActivityTests {
+    @Test func continueCounter_startsCountdownAndClearsIdleCount() {
+        let timer = CountDownTimer()
+        timer.state = .pause
+        timer.idleCount = 4
+
+        timer.continueCounter()
+
+        #expect(timer.state == .run)
+        #expect(timer.idleCount == 0)
     }
 }
 
@@ -555,5 +568,58 @@ struct AppDelegateKeyboardRefreshTests {
         appDelegate.refreshKeyboardAccessStatusForPeriodicPolling()
 
         #expect(monitor.promptFlags == [false])
+    }
+}
+
+struct StretchSuggestionRotationTests {
+    private let catalog = [
+        StretchSuggestion(id: "a", title: "A", detail: "detail a", systemImage: "1.circle"),
+        StretchSuggestion(id: "b", title: "B", detail: "detail b", systemImage: "2.circle"),
+        StretchSuggestion(id: "c", title: "C", detail: "detail c", systemImage: "3.circle")
+    ]
+
+    @Test func rotation_startsAtCatalogHeadForFirstBreak() {
+        let rotation = StretchSuggestion.rotation(count: 2, breakIndex: 0, from: catalog)
+
+        #expect(rotation.map(\.id) == ["a", "b"])
+    }
+
+    @Test func rotation_advancesWindowOnEachSubsequentBreak() {
+        let first = StretchSuggestion.rotation(count: 2, breakIndex: 0, from: catalog)
+        let second = StretchSuggestion.rotation(count: 2, breakIndex: 1, from: catalog)
+
+        #expect(second.map(\.id) == ["b", "c"])
+        #expect(first.map(\.id) != second.map(\.id))
+    }
+
+    @Test func rotation_wrapsAroundPastEndOfCatalog() {
+        let rotation = StretchSuggestion.rotation(count: 2, breakIndex: 2, from: catalog)
+
+        #expect(rotation.map(\.id) == ["c", "a"])
+    }
+
+    @Test func rotation_wrapsAroundForBreakIndexBeyondCatalogLength() {
+        let rotation = StretchSuggestion.rotation(count: 2, breakIndex: 4, from: catalog)
+
+        #expect(rotation.map(\.id) == ["b", "c"])
+    }
+
+    @Test func rotation_clampsWindowToCatalogSizeWithoutRepeating() {
+        let rotation = StretchSuggestion.rotation(count: 10, breakIndex: 1, from: catalog)
+
+        #expect(rotation.count == catalog.count)
+        #expect(Set(rotation.map(\.id)).count == catalog.count)
+    }
+
+    @Test func rotation_returnsEmptyForEmptyCatalogOrNonPositiveCount() {
+        #expect(StretchSuggestion.rotation(count: 4, breakIndex: 0, from: []).isEmpty)
+        #expect(StretchSuggestion.rotation(count: 0, breakIndex: 0, from: catalog).isEmpty)
+    }
+
+    @Test func defaultCatalog_hasUniqueIdsAndPopulatedCopy() {
+        let ids = StretchSuggestion.catalog.map(\.id)
+
+        #expect(Set(ids).count == ids.count)
+        #expect(StretchSuggestion.catalog.allSatisfy { !$0.title.isEmpty && !$0.detail.isEmpty })
     }
 }

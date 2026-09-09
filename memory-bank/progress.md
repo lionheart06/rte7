@@ -12,9 +12,7 @@
 - Weekday averages UI now shows a Mon-Fri bar chart (last 13 weeks), without an averages table.
 - Weekday average values are integer-only and always rounded up.
 - Weekday most-productive UI now shows a Mon-Fri bar chart (last 13 weeks) using rolling per-weekday max.
-- Dashboard now uses a two-row layout:
-  - row 1: Count & Idle + Workweek Average Goal
-  - row 2: Daily Streak + Weekday Averages + Weekday Most Productive
+- Dashboard uses a native two-row layout: `Count & Idle` and `Workweek Average Goal` on the first row; `Daily Streak`, `Weekday Averages`, and `Weekday Most Productive` on the second.
 - Daily streak table has fixed height to keep all rows visible.
 - Current day row now highlighted (dark green + bold).
 - Workweek average goal metric is displayed.
@@ -22,8 +20,10 @@
 - Coffee-cup progress indicator displays today's progress toward the average goal and unlocks at completion.
 - Keyboard listener status now appears in the main window with connected/disconnected icon states.
 - Break popup now uses adaptive system-material styling that stays readable in both dark and light themes.
+- Keyboard-monitor status now reflects macOS Input Monitoring permission, and any received key event immediately resumes the countdown and clears idle count.
 
 ## Recently Completed
+- Removed the retired HTML/WebKit overview feature and restored the native two-row dashboard layout.
 - Redesigned the break popup window to be dark/light friendly while keeping the large overlay:
   - removed fixed light-only window background tint,
   - added adaptive material backdrop + centered panel,
@@ -59,7 +59,7 @@
   - break-path history increment + prune integration.
 
 ## Known Issues / Risks
-- Full `xcodebuild test` execution is unstable in this environment due launcher assertion.
+- `xcodebuild build` and `xcodebuild test` are unstable in this environment due Xcode launcher/CoreSimulator failures; on July 20, 2026, the unavailable simulator service caused `SwiftDataMacros` to return a malformed response during compilation.
 - A global variable pattern (`dayOfWeekCounts`, `g_dayOfWeek`) may complicate future scaling/tests.
 - Date-level history currently uses another global (`dailyHistoryCounts`) in `CountDownTimer.swift`.
 - Day rollover is event-driven at break updates, not time-driven at midnight.

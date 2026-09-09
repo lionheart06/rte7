@@ -8,7 +8,7 @@
 import Foundation
 import UserNotifications
 
-enum CounterState {
+enum CounterState: Equatable {
     case run
     case pause
 }
@@ -79,7 +79,9 @@ class CountDownTimer {
     }
  
     func continueCounter() {
-        self.state = CounterState.run
+        state = .run
+        idleCount = 0
+        publishCountdown()
     }
  
     func setDelegate(appDelegate:AppDelegate) {

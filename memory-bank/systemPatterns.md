@@ -10,7 +10,8 @@
 - History persistence: `DailyCountHistoryStore` reads/writes date-level daily counts (`yyyy-MM-dd`) and prunes to rolling 13 weeks.
 - Goal calculation: `WorkweekGoalCalculator` computes the displayed daily target.
 - Weekday analytics: `WeekdayAverageCalculator` computes Mon-Fri averages and Mon-Fri productive peaks from the rolling history.
-- UI: `ContentView` renders timer, idle count, daily streak table, weekday-average chart, weekday-productive chart, and workweek goal card.
+- UI: `ContentView` renders timer, idle count, daily streak table, weekday-average chart, weekday-productive chart, and workweek goal card in a native two-row SwiftUI dashboard.
+- Global keyboard activity uses CoreGraphics Input Monitoring access, not Accessibility trust. Event callbacks dispatch to the main queue before updating `CountDownTimer` state.
 
 ## Core Runtime Flow
 1. `AppDelegate` creates `CountDownTimer` + `GlobalEventMonitor`.

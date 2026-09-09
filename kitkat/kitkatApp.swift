@@ -100,6 +100,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, GlobalEven
     var globalEventMonitor: (any KeyboardAccessMonitoring)!
     var countDownTimer: CountDownTimer!
     private var keyboardAccessRefreshTimer: Timer?
+    private var breakWindowShowCount = 0
     
     override init() {
         countDownTimer = CountDownTimer()
@@ -138,7 +139,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, GlobalEven
             
             self.window?.title = "Take a break, have a kitkat"
             self.window?.center()
-            let hostingView = NSHostingView(rootView: BreakWindow(window: self.window))
+            let hostingView = NSHostingView(
+                rootView: BreakWindow(window: self.window, breakIndex: self.breakWindowShowCount)
+            )
+            self.breakWindowShowCount += 1
             self.window?.contentView = hostingView
             self.window?.makeKeyAndOrderFront(self)
             self.window?.isReleasedWhenClosed = false

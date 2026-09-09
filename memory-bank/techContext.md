@@ -7,7 +7,7 @@
 - Persistence: `UserDefaults`
 - Async/data: `URLSession`, `Codable`, Combine
 - Notifications: `UserNotifications`
-- Keyboard monitoring: `NSEvent` local/global monitors + AX trust prompt
+- Keyboard monitoring: `NSEvent` local/global monitors with CoreGraphics Input Monitoring authorization (`CGPreflightListenEventAccess` / `CGRequestListenEventAccess`)
 
 ## Project Layout
 - `kitkat/` app source
