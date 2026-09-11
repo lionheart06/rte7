@@ -220,6 +220,21 @@ final class RESTAPIClient {
     }
 }
 
+// MARK: - Async support
+extension RESTAPIClient {
+    /// Async/await wrapper around the completion-handler `request`, so callers
+    /// running on the main actor can `try await` a decoded response.
+    func request<T: Codable & Sendable>(_ endpoint: String,
+                                        method: HTTPMethod = .get,
+                                        parameters: [String: Any]? = nil) async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            request(endpoint, method: method, parameters: parameters) { (result: Result<T, Error>) in
+                continuation.resume(with: result)
+            }
+        }
+    }
+}
+
 private struct ProxyEndpoint: Equatable {
     let host: String
     let port: Int

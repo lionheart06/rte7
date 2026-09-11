@@ -183,6 +183,9 @@ struct ContentView: View {
                 .groupBoxStyle(.automatic)
             }
             .frame(maxWidth: .infinity)
+
+            WeatherLocationSettingsView()
+                .frame(maxWidth: .infinity)
         }
         .padding(32)
     }

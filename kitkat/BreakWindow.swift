@@ -50,6 +50,11 @@ struct BreakView: View {
         VStack(alignment: .leading, spacing: 20) {
             header
 
+            HStack(alignment: .top, spacing: 12) {
+                WeatherTileView()
+                // The stock tile joins this row in a later step.
+            }
+
             StretchSuggestionsView(suggestions: suggestions)
 
             Text(viewModel.message)
