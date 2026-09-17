@@ -55,7 +55,10 @@ struct BreakView: View {
                 StockTileView()
             }
 
-            StretchSuggestionsView(suggestions: suggestions)
+            HStack(alignment: .top, spacing: 12) {
+                NewsTileView()
+                StretchSuggestionsView(suggestions: suggestions)
+            }
 
             Text(viewModel.message)
                 .font(.title3)

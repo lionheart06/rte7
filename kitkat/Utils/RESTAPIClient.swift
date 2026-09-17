@@ -136,6 +136,24 @@ final class RESTAPIClient {
         return request
     }
 
+    /// Fetches the raw response body for non-JSON payloads such as RSS.
+    /// Pass an `Accept` header to override the JSON default.
+    func requestData(_ endpoint: String,
+                     method: HTTPMethod = .get,
+                     parameters: [String: Any]? = nil,
+                     headers: [String: String] = [:],
+                     completion: @escaping (Result<Data, Error>) -> Void) {
+        var request: URLRequest
+        do {
+            request = try buildRequest(endpoint: endpoint, method: method, parameters: parameters, headers: headers)
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        execute(request: request, completion: completion)
+    }
+
     private func execute(request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) {
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -229,6 +247,18 @@ final class RESTAPIClient {
 
 // MARK: - Async support
 extension RESTAPIClient {
+    /// Async/await wrapper around `requestData`.
+    func requestData(_ endpoint: String,
+                     method: HTTPMethod = .get,
+                     parameters: [String: Any]? = nil,
+                     headers: [String: String] = [:]) async throws -> Data {
+        try await withCheckedThrowingContinuation { continuation in
+            requestData(endpoint, method: method, parameters: parameters, headers: headers) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+
     /// Async/await wrapper around the completion-handler `request`, so callers
     /// running on the main actor can `try await` a decoded response.
     func request<T: Codable & Sendable>(_ endpoint: String,
