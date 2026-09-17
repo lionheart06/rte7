@@ -186,6 +186,9 @@ struct ContentView: View {
 
             WeatherLocationSettingsView()
                 .frame(maxWidth: .infinity)
+
+            StockSettingsView()
+                .frame(maxWidth: .infinity)
         }
         .padding(32)
     }

@@ -36,6 +36,16 @@
   - Current file is placeholder: `README.md`
   - Target: include app purpose, architecture overview, build/test commands, and known environment caveats.
 
+- [ ] Extract a shared settings surface for break-window widgets.
+  - Current pattern: each widget adds its own row to `ContentView` with a bespoke view + model pair (`kitkat/WeatherLocationSettingsView.swift`, `kitkat/Model/WeatherLocationSettingsModel.swift`; the stock tile adds the same shape).
+  - Repeated pieces: an `@AppStorage`-bound field, a lookup-on-submit that validates the value against the data source, and an idle/checking/found/failed status label.
+  - Target: one settings panel (a `Settings` scene or a single `GroupBox`) built from a reusable validated-field row and a shared status view, where each widget contributes only its storage keys and a validation closure.
+
+- [ ] Move the Finnhub API key from UserDefaults to the Keychain.
+  - Current: `StockSettingsStore.apiKeyKey` stores the key in the sandboxed app defaults (`kitkat/Utils/StockSettingsStore.swift`).
+  - Blocker: the app is ad-hoc signed, and Keychain access is tied to the code signature, so every rebuild would prompt or lose the item.
+  - Target: once a development team signs the build, store the key with `SecItem` and keep the same `StockSettingsStore` API.
+
 ## Test coverage backlog (supports items above)
 
 - [ ] Add unit tests for `CountDownTimer` state transitions, idle reset, and break trigger path.

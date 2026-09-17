@@ -67,10 +67,11 @@ final class RESTAPIClient {
     func request<T: Codable>(_ endpoint: String,
                              method: HTTPMethod = .get,
                              parameters: [String: Any]? = nil,
+                             headers: [String: String] = [:],
                              completion: @escaping (Result<T, Error>) -> Void) {
         var request: URLRequest
         do {
-            request = try buildRequest(endpoint: endpoint, method: method, parameters: parameters)
+            request = try buildRequest(endpoint: endpoint, method: method, parameters: parameters, headers: headers)
         } catch {
             completion(.failure(error))
             return
@@ -94,10 +95,11 @@ final class RESTAPIClient {
     func requestVoid(_ endpoint: String,
                      method: HTTPMethod = .post,
                      parameters: [String: Any]? = nil,
+                     headers: [String: String] = [:],
                      completion: @escaping (Result<Void, Error>) -> Void) {
         var request: URLRequest
         do {
-            request = try buildRequest(endpoint: endpoint, method: method, parameters: parameters)
+            request = try buildRequest(endpoint: endpoint, method: method, parameters: parameters, headers: headers)
         } catch {
             completion(.failure(error))
             return
@@ -113,13 +115,18 @@ final class RESTAPIClient {
         }
     }
 
-    private func buildRequest(endpoint: String,
-                              method: HTTPMethod,
-                              parameters: [String: Any]?) throws -> URLRequest {
+    func buildRequest(endpoint: String,
+                      method: HTTPMethod,
+                      parameters: [String: Any]?,
+                      headers: [String: String] = [:]) throws -> URLRequest {
         let url = try makeURL(endpoint: endpoint)
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        for (field, value) in headers {
+            request.setValue(value, forHTTPHeaderField: field)
+        }
 
         if let parameters = parameters {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -226,9 +233,11 @@ extension RESTAPIClient {
     /// running on the main actor can `try await` a decoded response.
     func request<T: Codable & Sendable>(_ endpoint: String,
                                         method: HTTPMethod = .get,
-                                        parameters: [String: Any]? = nil) async throws -> T {
+                                        parameters: [String: Any]? = nil,
+
+                                        headers: [String: String] = [:]) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
-            request(endpoint, method: method, parameters: parameters) { (result: Result<T, Error>) in
+            request(endpoint, method: method, parameters: parameters, headers: headers) { (result: Result<T, Error>) in
                 continuation.resume(with: result)
             }
         }

@@ -52,7 +52,7 @@ struct BreakView: View {
 
             HStack(alignment: .top, spacing: 12) {
                 WeatherTileView()
-                // The stock tile joins this row in a later step.
+                StockTileView()
             }
 
             StretchSuggestionsView(suggestions: suggestions)
