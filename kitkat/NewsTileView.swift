@@ -159,13 +159,16 @@ struct NewsTileContent: View {
 // MARK: - Previews
 
 private let previewItems: [NewsItem] = [
-    NewsItem(id: "1", title: "Interest rates held but Bank signals rise if energy prices stay high",
+    NewsItem(id: "1", title: "Ceasefire talks resume as aid convoys reach the border",
+             summary: "Negotiators meet for a third day while relief agencies report the first deliveries in a week.",
+             link: URL(string: "https://www.bbc.co.uk/news/world"), publishedAt: Date().addingTimeInterval(-2 * 3600), source: "BBC World"),
+    NewsItem(id: "2", title: "Interest rates held but Bank signals rise if energy prices stay high",
              summary: "Rates are held for the sixth time in a row but the Bank says high energy prices make a rise more likely.",
-             link: URL(string: "https://www.bbc.co.uk/news"), publishedAt: Date().addingTimeInterval(-2 * 3600), source: "BBC News"),
-    NewsItem(id: "2", title: "New telescope captures first images of distant galaxy cluster",
-             summary: nil, link: URL(string: "https://www.bbc.co.uk/news"), publishedAt: Date().addingTimeInterval(-45 * 60), source: "BBC News"),
+             link: URL(string: "https://www.bbc.co.uk/news/business"), publishedAt: Date().addingTimeInterval(-45 * 60), source: "BBC Business"),
     NewsItem(id: "3", title: "Chip maker and rival agree to share factories",
-             summary: "The deal covers plants in Arizona and Dresden.", link: nil, publishedAt: nil, source: "BBC News"),
+             summary: "The deal covers plants in Arizona and Dresden.", link: nil, publishedAt: nil, source: "BBC Technology"),
+    NewsItem(id: "4", title: "New telescope captures first images of distant galaxy cluster",
+             summary: nil, link: URL(string: "https://www.bbc.co.uk/news/science_and_environment"), publishedAt: Date().addingTimeInterval(-20 * 60), source: "BBC Science & Environment"),
 ]
 
 #Preview("News tile states") {

@@ -8,9 +8,9 @@
 import Foundation
 import Combine
 
-/// Drives the news tile. Downloads the selected feed at most every 15 minutes
-/// (the interval the BBC feed itself advertises) and picks a few headlines each
-/// break, preferring ones recent breaks have not shown.
+/// Drives the news tile. Reads one feed per topic, downloading each at most
+/// every 15 minutes (the interval the BBC feeds advertise), and shows one
+/// headline from each feed per break, preferring ones recent breaks have not shown.
 final class NewsViewModel: ObservableObject {
     enum State: Equatable {
         /// A fetch is in flight. `previous` holds what the last break showed.
@@ -29,9 +29,8 @@ final class NewsViewModel: ObservableObject {
         }
     }
 
-    static let headlineCount = 3
     static let defaultMaxAge: TimeInterval = 15 * 60
-    /// Headlines are chosen from this many of the feed's leading items.
+    /// Each feed's headline is chosen from this many of its leading items.
     static let rotationPoolSize = 10
 
     @Published private(set) var state: State = .loading(previous: [])
@@ -51,65 +50,105 @@ final class NewsViewModel: ObservableObject {
         self.now = now
     }
 
-    /// Picks this break's headlines, downloading the feed first if the cache is
-    /// stale or belongs to another feed.
-    /// - Parameter force: Skip the freshness check and always download.
+    /// Picks this break's headlines, one per feed, downloading any feed whose
+    /// cached copy is stale or missing. A feed that fails to download keeps
+    /// contributing from its earlier copy; only when nothing at all is fresh
+    /// does the tile fall back to the last break's headlines.
+    /// - Parameter force: Skip the freshness check and download every feed.
     func refresh(force: Bool = false) async {
-        let feed = NewsStore.loadFeed(userDefaults: userDefaults)
-        let cache = NewsStore.loadCache(userDefaults: userDefaults).flatMap { $0.feedID == feed.id ? $0 : nil }
-        let previous = cache.map { Self.lastShown(in: $0) } ?? []
+        let feeds = NewsStore.loadFeeds(userDefaults: userDefaults)
+        let cache = NewsStore.loadCache(userDefaults: userDefaults)
         var recentlyShown = cache?.recentlyShownIDs ?? []
+        let previous = Self.lastShown(in: cache, feeds: feeds)
 
-        let pool: [NewsItem]
-        let fetchedAt: Date
-        if !force, let cache, now().timeIntervalSince(cache.fetchedAt) < maxAge {
-            pool = cache.items
-            fetchedAt = cache.fetchedAt
-        } else {
+        // Serve each feed from the cache while its copy is fresh.
+        var sections: [NewsSection?] = feeds.map { feed in
+            guard !force, let section = cache?.section(for: feed.id),
+                  now().timeIntervalSince(section.fetchedAt) < maxAge else { return nil }
+            return section
+        }
+
+        let stale = feeds.indices.filter { sections[$0] == nil }
+        if !stale.isEmpty {
             state = .loading(previous: previous)
-            do {
-                pool = Array(try await provider.headlines(from: feed).prefix(NewsStore.maxCachedItems))
-                fetchedAt = now()
-            } catch {
-                state = .failed(message: error.localizedDescription, previous: previous)
+            let fetchedAt = now()
+            let results = await fetchHeadlines(from: stale.map { feeds[$0] })
+
+            var downloaded = 0
+            var firstError: Error?
+            for (offset, index) in stale.enumerated() {
+                switch results[offset] {
+                case .success(let items):
+                    downloaded += 1
+                    sections[index] = NewsSection(feedID: feeds[index].id,
+                                                  items: Array(items.prefix(NewsStore.maxCachedItems)),
+                                                  fetchedAt: fetchedAt)
+                case .failure(let error):
+                    // Keep the stale copy so the feed still contributes; it is retried next break.
+                    firstError = firstError ?? error
+                    sections[index] = cache?.section(for: feeds[index].id)
+                }
+            }
+
+            if downloaded == 0, stale.count == feeds.count, let firstError {
+                state = .failed(message: firstError.localizedDescription, previous: previous)
                 return
             }
         }
 
-        let selection = Self.select(from: pool, recentlyShown: recentlyShown)
+        let live = sections.compactMap { $0 }
+        let selection = Self.select(from: live.map(\.items), recentlyShown: recentlyShown)
         recentlyShown.removeAll { id in selection.contains { $0.id == id } }
         recentlyShown.append(contentsOf: selection.map(\.id))
         recentlyShown = Array(recentlyShown.suffix(NewsStore.recentlyShownLimit))
 
-        NewsStore.saveCache(
-            NewsCache(feedID: feed.id, items: pool, fetchedAt: fetchedAt, recentlyShownIDs: recentlyShown),
-            userDefaults: userDefaults
-        )
+        NewsStore.saveCache(NewsCache(sections: live, recentlyShownIDs: recentlyShown), userDefaults: userDefaults)
         state = .loaded(selection)
     }
 
-    /// Chooses `headlineCount` items from the leading `rotationPoolSize` of the
-    /// pool: unseen ones first in feed order, then the least recently shown.
-    static func select(from pool: [NewsItem],
+    /// One story per feed: the first unseen item among the feed's leading
+    /// `poolSize`, else the one shown longest ago. A story syndicated to more
+    /// than one feed is shown once.
+    static func select(from feeds: [[NewsItem]],
                        recentlyShown: [String],
-                       count: Int = headlineCount,
                        poolSize: Int = rotationPoolSize) -> [NewsItem] {
-        let candidates = Array(pool.prefix(poolSize))
-        let unseen = candidates.filter { !recentlyShown.contains($0.id) }
-        if unseen.count >= count {
-            return Array(unseen.prefix(count))
+        var picked: [NewsItem] = []
+        for items in feeds {
+            let candidates = items.prefix(poolSize).filter { candidate in !picked.contains { $0.id == candidate.id } }
+            let choice = candidates.first { !recentlyShown.contains($0.id) }
+                ?? candidates.min { (recentlyShown.firstIndex(of: $0.id) ?? 0) < (recentlyShown.firstIndex(of: $1.id) ?? 0) }
+            if let choice {
+                picked.append(choice)
+            }
         }
+        return picked
+    }
 
-        // Fill the remainder with seen items, oldest showing first.
-        let seen = candidates
-            .filter { recentlyShown.contains($0.id) }
-            .sorted { (recentlyShown.firstIndex(of: $0.id) ?? 0) < (recentlyShown.firstIndex(of: $1.id) ?? 0) }
-        return Array((unseen + seen).prefix(count))
+    /// Downloads the feeds concurrently; results line up with `feeds`.
+    private func fetchHeadlines(from feeds: [NewsFeed]) async -> [Result<[NewsItem], Error>] {
+        await withTaskGroup(of: (Int, Result<[NewsItem], Error>).self) { group in
+            for (index, feed) in feeds.enumerated() {
+                group.addTask { [provider] in
+                    do {
+                        return (index, .success(try await provider.headlines(from: feed)))
+                    } catch {
+                        return (index, .failure(error))
+                    }
+                }
+            }
+
+            var results = [Result<[NewsItem], Error>](repeating: .success([]), count: feeds.count)
+            for await (index, result) in group {
+                results[index] = result
+            }
+            return results
+        }
     }
 
     /// The items the previous break showed, in the order it showed them.
-    private static func lastShown(in cache: NewsCache) -> [NewsItem] {
-        let lastIDs = cache.recentlyShownIDs.suffix(headlineCount)
-        return lastIDs.compactMap { id in cache.items.first { $0.id == id } }
+    private static func lastShown(in cache: NewsCache?, feeds: [NewsFeed]) -> [NewsItem] {
+        guard let cache else { return [] }
+        let items = feeds.flatMap { cache.section(for: $0.id)?.items ?? [] }
+        return cache.recentlyShownIDs.suffix(feeds.count).compactMap { id in items.first { $0.id == id } }
     }
 }

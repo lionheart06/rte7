@@ -31,7 +31,7 @@ nonisolated struct NewsFeed: Codable, Equatable, Identifiable {
     }
 }
 
-extension NewsFeed {
+nonisolated extension NewsFeed {
     /// Feeds are published for personal, non-commercial use; see
     /// https://www.bbc.co.uk/usingthebbc/terms-of-use/#15metadataandrssfeeds
     static let bbcTopStories = NewsFeed(id: "bbc-top", name: "BBC News", urlString: "https://feeds.bbci.co.uk/news/rss.xml")
@@ -40,8 +40,12 @@ extension NewsFeed {
     static let bbcTechnology = NewsFeed(id: "bbc-technology", name: "BBC Technology", urlString: "https://feeds.bbci.co.uk/news/technology/rss.xml")
     static let bbcScience = NewsFeed(id: "bbc-science", name: "BBC Science & Environment", urlString: "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml")
 
-    /// What the first version shows. Topic selection will pick from `catalog`.
+    /// The catalog's headline feed; the feed client uses it as its base URL.
     static let `default` = bbcTopStories
 
     static let catalog: [NewsFeed] = [bbcTopStories, bbcWorld, bbcBusiness, bbcTechnology, bbcScience]
+
+    /// What the tile reads when nothing has been chosen: one story from each
+    /// of these per break, in this order.
+    static let defaultSelection: [NewsFeed] = [bbcWorld, bbcBusiness, bbcTechnology, bbcScience]
 }
