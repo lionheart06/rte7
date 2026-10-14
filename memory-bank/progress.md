@@ -21,6 +21,7 @@
 - Keyboard listener status now appears in the main window with connected/disconnected icon states.
 - Break popup now uses adaptive system-material styling that stays readable in both dark and light themes.
 - Keyboard-monitor status now reflects macOS Input Monitoring permission, and any received key event immediately resumes the countdown and clears idle count.
+- Break window weather tile shows the temperature in the locale's preferred unit with the other of °F/°C beside it in smaller secondary text.
 
 ## Recently Completed
 - Removed the retired HTML/WebKit overview feature and restored the native two-row dashboard layout.

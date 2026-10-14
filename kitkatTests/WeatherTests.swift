@@ -80,6 +80,13 @@ struct WeatherSnapshotTests {
         fetchedAt: Date(timeIntervalSince1970: 1_757_400_000)
     )
 
+    private let freezing = WeatherSnapshot(
+        temperatureCelsius: -3.6,
+        condition: .from(wmoCode: 71),
+        locationName: "Oslo",
+        fetchedAt: Date(timeIntervalSince1970: 1_757_400_000)
+    )
+
     @Test func temperatureIsExposedAsACelsiusMeasurement() {
         #expect(sample.temperature.unit == .celsius)
         #expect(sample.temperature.value == 22.4)
@@ -93,6 +100,26 @@ struct WeatherSnapshotTests {
     @Test func formatsInCelsiusForUKLocale() {
         let text = sample.formattedTemperature(locale: Locale(identifier: "en_GB"))
         #expect(text == "22°C")
+    }
+
+    @Test func alternateUnitIsCelsiusForUSLocale() {
+        let text = sample.formattedAlternateTemperature(locale: Locale(identifier: "en_US"))
+        #expect(text == "22°C")
+    }
+
+    @Test func alternateUnitIsFahrenheitForUKLocale() {
+        let text = sample.formattedAlternateTemperature(locale: Locale(identifier: "en_GB"))
+        #expect(text == "72°F")
+    }
+
+    @Test func negativeTemperatureFormatsInBothUnits() {
+        let uk = Locale(identifier: "en_GB")
+        #expect(freezing.formattedTemperature(locale: uk) == "-4°C")
+        #expect(freezing.formattedAlternateTemperature(locale: uk) == "26°F")
+
+        let us = Locale(identifier: "en_US")
+        #expect(freezing.formattedTemperature(locale: us) == "26°F")
+        #expect(freezing.formattedAlternateTemperature(locale: us) == "-4°C")
     }
 
     @Test func roundTripsThroughJSON() throws {

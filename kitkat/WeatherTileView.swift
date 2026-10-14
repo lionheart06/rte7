@@ -79,10 +79,18 @@ struct WeatherTileContent: View {
                 .frame(width: 48, alignment: .center)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(snapshot.formattedTemperature())
-                    .font(.system(size: 32, weight: .semibold, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundStyle(.primary)
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(snapshot.formattedTemperature())
+                        .font(.system(size: 32, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.primary)
+
+                    Text(snapshot.formattedAlternateTemperature())
+                        .font(.system(size: 17, weight: .medium, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                }
+                .lineLimit(1)
 
                 Text(snapshot.condition.description)
                     .font(.body)
@@ -95,7 +103,7 @@ struct WeatherTileContent: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
-            "Weather in \(snapshot.locationName): \(snapshot.formattedTemperature()), \(snapshot.condition.description)"
+            "Weather in \(snapshot.locationName): \(snapshot.formattedTemperature()), \(snapshot.formattedAlternateTemperature()), \(snapshot.condition.description)"
         )
     }
 

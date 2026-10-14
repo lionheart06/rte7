@@ -28,6 +28,25 @@ nonisolated struct WeatherSnapshot: Codable, Equatable {
             .locale(locale)
         )
     }
+
+    /// Formats the temperature in whichever of Fahrenheit or Celsius
+    /// `formattedTemperature(locale:)` does not use, so the two can be shown side by
+    /// side, e.g. "22°C" for en_US and "72°F" for en_GB.
+    func formattedAlternateTemperature(locale: Locale = .current) -> String {
+        let celsius = format(temperature, locale: locale)
+        let fahrenheit = format(temperature.converted(to: .fahrenheit), locale: locale)
+        return formattedTemperature(locale: locale) == celsius ? fahrenheit : celsius
+    }
+
+    /// Formats `measurement` in its own unit with the same width and precision as
+    /// `formattedTemperature(locale:)`. `.asProvided` stops Foundation from
+    /// converting the unit to the locale's preference.
+    private func format(_ measurement: Measurement<UnitTemperature>, locale: Locale) -> String {
+        measurement.formatted(
+            .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(0)))
+            .locale(locale)
+        )
+    }
 }
 
 /// A human-readable weather condition paired with the SF Symbol used to draw it.
