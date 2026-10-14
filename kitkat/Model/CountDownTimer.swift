@@ -22,7 +22,6 @@ class CountDownTimer {
     var app:AppDelegate?
     var idleCount:Int = 0
     var count:Int = PERIOD
-    private let keepAliveService = KeepAliveService()
   
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true, block: {[weak self] _ in
@@ -39,7 +38,6 @@ class CountDownTimer {
 
             self.publishCountdown()
             if self.state == CounterState.run {
-                self.keepAliveService.sendKeepAlive()
                 self.state = CounterState.pause
                 self.count -= 1
                 if self.count <= 0 {
